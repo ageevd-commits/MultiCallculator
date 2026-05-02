@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мультикалькулятор объектов</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      color: #1f2933;
+    }
+    header {
+      background: #111827;
+      color: #fff;
+      padding: 18px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    }
+    .top {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 22px; }
+    .subtitle { color: #cbd5e1; font-size: 13px; margin-top: 4px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button.active { background: #fff; color: #111827; font-weight: 700; }
+    main { max-width: 1400px; margin: 0 auto; padding: 0; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 92px);
+      border: 0;
+      display: block;
+      background: #f4f6f8;
+    }
+    .hint {
+      max-width: 1200px;
+      margin: 14px auto 0;
+      padding: 0 24px;
+      color: #667085;
+      font-size: 13px;
+    }
+    @media (max-width: 700px) {
+      header { padding: 14px; }
+      iframe { height: calc(100vh - 140px); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div>
+        <h1>Мультикалькулятор объектов</h1>
+        <div class="subtitle">Global Cleaning / 112 Cleaning: пожар, металл и будущие методологии</div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('fire', this)">Пожар</button>
+        <button class="tab" onclick="showTab('metal', this)">Металл</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section id="fire" class="panel active">
+      <iframe title="Калькулятор пожара" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;title&gt;Калькулятор работ после пожара V2&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; color: #1f2933; }
+    .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; }
+    .card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 22px 0 8px; font-size: 16px; }
+    .note { color: #667085; font-size: 14px; margin-bottom: 18px; line-height: 1.4; }
+    label { display: block; font-weight: 700; margin: 14px 0 6px; }
+    input, select, textarea { width: 100%; box-sizing: border-box; padding: 11px; border: 1px solid #d0d5dd; border-radius: 10px; font-size: 15px; background: #fff; }
+    textarea { min-height: 90px; resize: vertical; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .result { font-size: 18px; line-height: 1.45; }
+    .big { font-size: 30px; font-weight: 800; margin: 6px 0 12px; }
+    .pill { display: inline-block; padding: 7px 10px; border-radius: 999px; background: #eef2ff; margin: 4px 4px 4px 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+    td, th { border-bottom: 1px solid #eaecf0; padding: 9px 6px; text-align: left; vertical-align: top; }
+    th { color: #667085; font-weight: 700; }
+    button { width: 100%; margin-top: 16px; padding: 13px; border: 0; border-radius: 12px; background: #111827; color: #fff; font-size: 16px; cursor: pointer; }
+    .clientText { white-space: pre-wrap; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 12px; padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.45; }
+    .section { border-top: 1px solid #eaecf0; padding-top: 10px; margin-top: 12px; }
+    @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } .grid2, .grid3 { grid-template-columns: 1fr; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;h1&gt;Калькулятор работ после пожара V2&lt;/h1&gt;
+      &lt;div class=&quot;note&quot;&gt;Экспресс-оценка сложных объектов после пожара: очистка под ремонт / дефектовку, демонтаж, лестницы, скрытые полости, сроки и проверка экономики.&lt;/div&gt;
+      &lt;h3&gt;1. База объекта&lt;/h3&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Площадь по полу, м²&lt;/label&gt;&lt;input id=&quot;area&quot; type=&quot;number&quot; value=&quot;1000&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Базовая ставка, ₽/м²&lt;/label&gt;&lt;select id=&quot;baseRate&quot;&gt;&lt;option value=&quot;2500&quot;&gt;2500 — зона риска&lt;/option&gt;&lt;option value=&quot;3000&quot;&gt;3000 — нижняя рабочая&lt;/option&gt;&lt;option value=&quot;3500&quot;&gt;3500 — нормальная&lt;/option&gt;&lt;option value=&quot;4000&quot; selected&gt;4000 — сложный объект&lt;/option&gt;&lt;option value=&quot;5000&quot;&gt;5000 — тяжелый объект&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Высота&lt;/label&gt;&lt;select id=&quot;heightCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;до 3 м — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;3–4 м — 1.2&lt;/option&gt;&lt;option value=&quot;1.35&quot;&gt;4–5 м — 1.35&lt;/option&gt;&lt;option value=&quot;1.50&quot; selected&gt;5–6 м — 1.5&lt;/option&gt;&lt;option value=&quot;1.80&quot;&gt;6+ м / сложная высота — 1.8&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Сложный заказчик / контроль&lt;/label&gt;&lt;select id=&quot;clientCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;обычный — 1.0&lt;/option&gt;&lt;option value=&quot;1.15&quot;&gt;требовательный — 1.15&lt;/option&gt;&lt;option value=&quot;1.30&quot; selected&gt;сложный / много контроля — 1.3&lt;/option&gt;&lt;option value=&quot;1.50&quot;&gt;перфекционист / высокий риск — 1.5&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Дорогая / деликатная отделка&lt;/label&gt;&lt;select id=&quot;finishCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;простая — 1.0&lt;/option&gt;&lt;option value=&quot;1.15&quot;&gt;средняя — 1.15&lt;/option&gt;&lt;option value=&quot;1.30&quot; selected&gt;дорогая — 1.3&lt;/option&gt;&lt;option value=&quot;1.50&quot;&gt;очень деликатная — 1.5&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Доступ / скрытые риски&lt;/label&gt;&lt;select id=&quot;accessCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;нормальный — 1.0&lt;/option&gt;&lt;option value=&quot;1.15&quot;&gt;есть трудные зоны — 1.15&lt;/option&gt;&lt;option value=&quot;1.30&quot; selected&gt;много трудных зон — 1.3&lt;/option&gt;&lt;option value=&quot;1.60&quot;&gt;очень сложный доступ — 1.6&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Срочность&lt;/label&gt;&lt;select id=&quot;urgencyCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;обычный режим — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;сжатые сроки — 1.2&lt;/option&gt;&lt;option value=&quot;1.50&quot;&gt;очень срочно — 1.5&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Режим работ&lt;/label&gt;&lt;select id=&quot;nightCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;день — 1.0&lt;/option&gt;&lt;option value=&quot;1.30&quot;&gt;ночь / неудобное окно — 1.3&lt;/option&gt;&lt;option value=&quot;1.60&quot;&gt;ночь + короткая смена — 1.6&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;h3&gt;2. Дополнительные блоки&lt;/h3&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Демонтаж, м²&lt;/label&gt;&lt;input id=&quot;demArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка демонтажа, ₽/м²&lt;/label&gt;&lt;input id=&quot;demRate&quot; type=&quot;number&quot; value=&quot;900&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Вывоз / контейнеры, ₽&lt;/label&gt;&lt;input id=&quot;waste&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Лестницы, м² по проекции&lt;/label&gt;&lt;input id=&quot;stairsArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Коэф. лестниц&lt;/label&gt;&lt;select id=&quot;stairsMult&quot;&gt;&lt;option value=&quot;1.5&quot;&gt;×1.5&lt;/option&gt;&lt;option value=&quot;2.0&quot; selected&gt;×2.0 — рекомендуемо&lt;/option&gt;&lt;option value=&quot;2.5&quot;&gt;×2.5 — сложная лестница&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка лестниц, ₽/м²&lt;/label&gt;&lt;input id=&quot;stairsRate&quot; type=&quot;number&quot; value=&quot;4000&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Скрытые полости, м²&lt;/label&gt;&lt;input id=&quot;voidArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка полостей, ₽/м²&lt;/label&gt;&lt;input id=&quot;voidRate&quot; type=&quot;number&quot; value=&quot;1800&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Вскрытие лючков, шт.&lt;/label&gt;&lt;input id=&quot;hatches&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Ставка за лючок, ₽/шт.&lt;/label&gt;&lt;input id=&quot;hatchRate&quot; type=&quot;number&quot; value=&quot;700&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Резерв / непредвиденное, %&lt;/label&gt;&lt;input id=&quot;reserve&quot; type=&quot;number&quot; value=&quot;10&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;h3&gt;3. Производственная проверка&lt;/h3&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Норма, м²/чел-день&lt;/label&gt;&lt;input id=&quot;prodNorm&quot; type=&quot;number&quot; value=&quot;8&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Стоимость чел-дня, ₽&lt;/label&gt;&lt;input id=&quot;manDayCost&quot; type=&quot;number&quot; value=&quot;5500&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Бригада, человек&lt;/label&gt;&lt;input id=&quot;crew&quot; type=&quot;number&quot; value=&quot;8&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Доп. расходы к труду, %&lt;/label&gt;&lt;input id=&quot;extraCostPct&quot; type=&quot;number&quot; value=&quot;30&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Комментарий&lt;/label&gt;&lt;input id=&quot;comment&quot; value=&quot;Стоимость предварительная. Финальная фиксация после осмотра, зонирования и пробного участка.&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;&lt;h2&gt;Расчет&lt;/h2&gt;&lt;div class=&quot;result&quot;&gt;Ориентировочная стоимость:&lt;div class=&quot;big&quot; id=&quot;totalPrice&quot;&gt;—&lt;/div&gt;&lt;span class=&quot;pill&quot; id=&quot;ratePill&quot;&gt;—&lt;/span&gt;&lt;span class=&quot;pill&quot; id=&quot;daysPill&quot;&gt;—&lt;/span&gt;&lt;span class=&quot;pill&quot; id=&quot;marginPill&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Показатель&lt;/th&gt;&lt;th&gt;Значение&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Базовые работы&lt;/td&gt;&lt;td id=&quot;baseSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Итоговый коэффициент&lt;/td&gt;&lt;td id=&quot;coefSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Демонтаж + вывоз&lt;/td&gt;&lt;td id=&quot;demSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Лестницы&lt;/td&gt;&lt;td id=&quot;stairsSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Скрытые полости&lt;/td&gt;&lt;td id=&quot;voidSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Резерв&lt;/td&gt;&lt;td id=&quot;reserveSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Чел-дни&lt;/td&gt;&lt;td id=&quot;manDays&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Расчетный срок&lt;/td&gt;&lt;td id=&quot;duration&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Производственная себестоимость&lt;/td&gt;&lt;td id=&quot;costSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Валовая маржа&lt;/td&gt;&lt;td id=&quot;grossMargin&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div class=&quot;section&quot;&gt;&lt;div id=&quot;warning&quot; class=&quot;note&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;button onclick=&quot;copyClientText()&quot;&gt;Скопировать текст для клиента&lt;/button&gt;&lt;div class=&quot;clientText&quot; id=&quot;clientText&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    const ids = [&quot;area&quot;,&quot;baseRate&quot;,&quot;heightCoef&quot;,&quot;clientCoef&quot;,&quot;finishCoef&quot;,&quot;accessCoef&quot;,&quot;urgencyCoef&quot;,&quot;nightCoef&quot;,&quot;demArea&quot;,&quot;demRate&quot;,&quot;waste&quot;,&quot;stairsArea&quot;,&quot;stairsMult&quot;,&quot;stairsRate&quot;,&quot;voidArea&quot;,&quot;voidRate&quot;,&quot;hatches&quot;,&quot;hatchRate&quot;,&quot;reserve&quot;,&quot;prodNorm&quot;,&quot;manDayCost&quot;,&quot;crew&quot;,&quot;extraCostPct&quot;,&quot;comment&quot;];
+    ids.forEach(id =&gt; document.getElementById(id).addEventListener(&quot;input&quot;, calculate));
+    function rub(n) { return Math.round(n).toLocaleString(&quot;ru-RU&quot;) + &quot; ₽&quot;; }
+    function num(id) { return +document.getElementById(id).value || 0; }
+    function calculate() {
+      const area = num(&quot;area&quot;), baseRate = num(&quot;baseRate&quot;), heightCoef = num(&quot;heightCoef&quot;), clientCoef = num(&quot;clientCoef&quot;), finishCoef = num(&quot;finishCoef&quot;), accessCoef = num(&quot;accessCoef&quot;), urgencyCoef = num(&quot;urgencyCoef&quot;), nightCoef = num(&quot;nightCoef&quot;);
+      const demArea = num(&quot;demArea&quot;), demRate = num(&quot;demRate&quot;), waste = num(&quot;waste&quot;), stairsArea = num(&quot;stairsArea&quot;), stairsMult = num(&quot;stairsMult&quot;), stairsRate = num(&quot;stairsRate&quot;), voidArea = num(&quot;voidArea&quot;), voidRate = num(&quot;voidRate&quot;), hatches = num(&quot;hatches&quot;), hatchRate = num(&quot;hatchRate&quot;), reservePct = num(&quot;reserve&quot;) / 100;
+      const prodNorm = num(&quot;prodNorm&quot;) || 8, manDayCost = num(&quot;manDayCost&quot;) || 5500, crew = num(&quot;crew&quot;) || 1, extraCostPct = num(&quot;extraCostPct&quot;) / 100, comment = document.getElementById(&quot;comment&quot;).value;
+      const fullCoef = heightCoef * clientCoef * finishCoef * accessCoef * urgencyCoef * nightCoef;
+      const commercialCoef = 1 + (fullCoef - 1) * 0.35;
+      const baseWorks = area * baseRate * commercialCoef;
+      const demWorks = demArea * demRate + waste;
+      const stairsWorks = stairsArea * stairsMult * stairsRate;
+      const voidWorks = voidArea * voidRate + hatches * hatchRate;
+      const subtotal = baseWorks + demWorks + stairsWorks + voidWorks;
+      const reserve = subtotal * reservePct;
+      const total = subtotal + reserve;
+      const effectiveRate = area &gt; 0 ? total / area : 0;
+      const baseManDays = area / prodNorm;
+      const addManDays = (demArea / 12) + (stairsArea * stairsMult / 8) + (voidArea / 6) + (hatches / 10);
+      const manDays = baseManDays + addManDays;
+      const days = manDays / crew;
+      const productionCost = manDays * manDayCost * (1 + extraCostPct);
+      const grossMargin = total - productionCost;
+      const grossMarginPct = total &gt; 0 ? grossMargin / total * 100 : 0;
+      document.getElementById(&quot;totalPrice&quot;).innerText = rub(total);
+      document.getElementById(&quot;ratePill&quot;).innerText = `Эффективно: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м²`;
+      document.getElementById(&quot;daysPill&quot;).innerText = `Срок: ~${Math.ceil(days)} раб. дн. при ${crew} чел.`;
+      document.getElementById(&quot;marginPill&quot;).innerText = `Маржа: ~${Math.round(grossMarginPct)}%`;
+      document.getElementById(&quot;baseSum&quot;).innerText = rub(baseWorks);
+      document.getElementById(&quot;coefSum&quot;).innerText = `${fullCoef.toFixed(2)} / коммерческий ${commercialCoef.toFixed(2)}`;
+      document.getElementById(&quot;demSum&quot;).innerText = rub(demWorks);
+      document.getElementById(&quot;stairsSum&quot;).innerText = rub(stairsWorks);
+      document.getElementById(&quot;voidSum&quot;).innerText = rub(voidWorks);
+      document.getElementById(&quot;reserveSum&quot;).innerText = rub(reserve);
+      document.getElementById(&quot;manDays&quot;).innerText = `${manDays.toFixed(1)} чел-дней`;
+      document.getElementById(&quot;duration&quot;).innerText = `~${Math.ceil(days)} рабочих дней`;
+      document.getElementById(&quot;costSum&quot;).innerText = rub(productionCost);
+      document.getElementById(&quot;grossMargin&quot;).innerText = `${rub(grossMargin)} (${Math.round(grossMarginPct)}%)`;
+      let warning = &quot;&quot;;
+      if (effectiveRate &lt; 3000) warning = &quot;⚠️ Ниже 3000 ₽/м² — зона дискомфорта для сложного пожара. Нужна осторожность: сокращать объем, фиксировать исключения или поднимать цену.&quot;;
+      else if (effectiveRate &lt; 4000) warning = &quot;✅ Рабочая зона 3000–4000 ₽/м². Важно отдельно зафиксировать демонтаж, лестницы и скрытые полости.&quot;;
+      else if (effectiveRate &lt; 5000) warning = &quot;✅ Зона сложного объекта 4000–5000 ₽/м². Есть запас на управление, риски и хвосты.&quot;;
+      else warning = &quot;🔥 5000+ ₽/м² — тяжелый объект или много отдельных рисков. Хорошо обосновывать через высоту, доступ, полости, лестницы и деликатную отделку.&quot;;
+      document.getElementById(&quot;warning&quot;).innerText = warning;
+      document.getElementById(&quot;clientText&quot;).innerText = `Предварительная оценка работ после пожара\n\nПо предоставленной информации ориентировочная стоимость комплекса работ составляет ${rub(total)}.\n\nВ расчет включены:\n— базовая очистка и подготовка помещений после пожара по площади около ${area} м²;\n— поправка на высоту, сложность доступа, деликатность отделки и уровень контроля;\n— отдельные блоки: демонтаж/вывоз, лестницы, скрытые полости и вскрытие лючков — при наличии соответствующих объемов;\n— резерв на непредвиденные работы.\n\nОриентировочная эффективная ставка: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м².\nОриентировочный срок: около ${Math.ceil(days)} рабочих дней при бригаде ${crew} человек.\n\nВажно: работы в скрытых полостях, зашивках, технических лючках и труднодоступных местах лучше фиксировать отдельным блоком, так как фактический объем уточняется после вскрытия и осмотра.\n\n${comment}`;
+    }
+    function copyClientText() { navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText); alert(&quot;Текст скопирован&quot;); }
+    calculate();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+    </section>
+    <section id="metal" class="panel">
+      <iframe title="Калькулятор очистки металла" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;title&gt;Калькулятор очистки металла под покраску&lt;/title&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 24px;
+      color: #1f2933;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    h2 { margin-top: 0; font-size: 20px; }
+    .note { color: #667085; font-size: 14px; margin-bottom: 18px; }
+    label { display: block; font-weight: 700; margin: 14px 0 6px; }
+    input, select, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+    }
+    textarea { min-height: 86px; resize: vertical; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .result {
+      font-size: 18px;
+      line-height: 1.45;
+    }
+    .big {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 6px 0 12px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      margin: 4px 4px 4px 0;
+      font-size: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    td, th {
+      border-bottom: 1px solid #eaecf0;
+      padding: 9px 6px;
+      text-align: left;
+    }
+    th { color: #667085; font-weight: 700; }
+    button {
+      width: 100%;
+      margin-top: 16px;
+      padding: 13px;
+      border: 0;
+      border-radius: 12px;
+      background: #111827;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .clientText {
+      white-space: pre-wrap;
+      background: #f9fafb;
+      border: 1px solid #eaecf0;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+    .warning { color: #b42318; font-weight: 700; }
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;h1&gt;Калькулятор очистки металла под покраску&lt;/h1&gt;
+      &lt;div class=&quot;note&quot;&gt;Для предварительной ОС: абразивоструйная очистка металла, без покраски. Подходит для балок, ферм, перекрытий, цистерн, металлоконструкций.&lt;/div&gt;
+
+      &lt;div class=&quot;grid2&quot;&gt;
+        &lt;div&gt;
+          &lt;label&gt;Площадь металла, м²&lt;/label&gt;
+          &lt;input id=&quot;area&quot; type=&quot;number&quot; value=&quot;500&quot; min=&quot;1&quot; /&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;Количество постов&lt;/label&gt;
+          &lt;input id=&quot;posts&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;label&gt;Тип геометрии&lt;/label&gt;
+      &lt;select id=&quot;geometry&quot;&gt;
+        &lt;option value=&quot;1.00&quot;&gt;Простой металл: листы, прямые балки&lt;/option&gt;
+        &lt;option value=&quot;1.20&quot; selected&gt;Средняя сложность: балки, ребра, стыки&lt;/option&gt;
+        &lt;option value=&quot;1.45&quot;&gt;Сложная геометрия: фермы, связи, много углов&lt;/option&gt;
+        &lt;option value=&quot;1.70&quot;&gt;Очень сложная: плотные фермы / работа над головой&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;label&gt;Состояние поверхности&lt;/label&gt;
+      &lt;select id=&quot;condition&quot;&gt;
+        &lt;option value=&quot;1.00&quot;&gt;Легкая коррозия / слабое ЛКП&lt;/option&gt;
+        &lt;option value=&quot;1.20&quot; selected&gt;Средняя коррозия + старая краска&lt;/option&gt;
+        &lt;option value=&quot;1.45&quot;&gt;Сильная коррозия / толстое покрытие&lt;/option&gt;
+        &lt;option value=&quot;1.70&quot;&gt;Тяжелая коррозия / надо снимать почти “в ноль”&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;label&gt;Требуемая степень очистки&lt;/label&gt;
+      &lt;select id=&quot;standard&quot;&gt;
+        &lt;option value=&quot;1.00&quot;&gt;St / техническая зачистка&lt;/option&gt;
+        &lt;option value=&quot;1.15&quot; selected&gt;Sa 2 — под стандартную покраску&lt;/option&gt;
+        &lt;option value=&quot;1.35&quot;&gt;Sa 2.5 — качественная подготовка&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;label&gt;Доступ и условия&lt;/label&gt;
+      &lt;select id=&quot;access&quot;&gt;
+        &lt;option value=&quot;1.00&quot;&gt;Хороший доступ, работа с земли / удобно&lt;/option&gt;
+        &lt;option value=&quot;1.15&quot;&gt;Подъемник, нормальный доступ&lt;/option&gt;
+        &lt;option value=&quot;1.30&quot; selected&gt;Подъемник + работа снизу вверх&lt;/option&gt;
+        &lt;option value=&quot;1.55&quot;&gt;Сложный доступ / ветер / частые перестановки&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;div class=&quot;grid2&quot;&gt;
+        &lt;div&gt;
+          &lt;label&gt;Базовая выработка поста, м²/смена&lt;/label&gt;
+          &lt;input id=&quot;baseProduction&quot; type=&quot;number&quot; value=&quot;90&quot; min=&quot;10&quot; /&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;Базовая цена, ₽/м²&lt;/label&gt;
+          &lt;input id=&quot;basePrice&quot; type=&quot;number&quot; value=&quot;750&quot; min=&quot;100&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;grid2&quot;&gt;
+        &lt;div&gt;
+          &lt;label&gt;Минимальная маржа / риск, %&lt;/label&gt;
+          &lt;input id=&quot;risk&quot; type=&quot;number&quot; value=&quot;20&quot; min=&quot;0&quot; /&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;Смен в день&lt;/label&gt;
+          &lt;input id=&quot;shiftsPerDay&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;label&gt;Комментарий / особенности объекта&lt;/label&gt;
+      &lt;textarea id=&quot;comment&quot;&gt;Подъемник и укрытие предоставляет заказчик. Работа только по металлу, без покраски.&lt;/textarea&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;h2&gt;Расчет&lt;/h2&gt;
+      &lt;div class=&quot;result&quot;&gt;
+        Рекомендуемая цена:
+        &lt;div class=&quot;big&quot; id=&quot;priceRange&quot;&gt;—&lt;/div&gt;
+        &lt;span class=&quot;pill&quot; id=&quot;production&quot;&gt;—&lt;/span&gt;
+        &lt;span class=&quot;pill&quot; id=&quot;days&quot;&gt;—&lt;/span&gt;
+        &lt;span class=&quot;pill&quot; id=&quot;total&quot;&gt;—&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;table&gt;
+        &lt;tr&gt;&lt;th&gt;Показатель&lt;/th&gt;&lt;th&gt;Значение&lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Коэффициент сложности&lt;/td&gt;&lt;td id=&quot;coef&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Выработка 1 поста&lt;/td&gt;&lt;td id=&quot;prodOne&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Общая выработка&lt;/td&gt;&lt;td id=&quot;prodAll&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Количество смен&lt;/td&gt;&lt;td id=&quot;shifts&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;Ориентир по стоимости&lt;/td&gt;&lt;td id=&quot;sumRange&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
+      &lt;/table&gt;
+
+      &lt;button onclick=&quot;copyClientText()&quot;&gt;Скопировать текст для клиента&lt;/button&gt;
+      &lt;div class=&quot;clientText&quot; id=&quot;clientText&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;note warning&quot; id=&quot;warning&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;script&gt;
+    const ids = [&quot;area&quot;,&quot;posts&quot;,&quot;geometry&quot;,&quot;condition&quot;,&quot;standard&quot;,&quot;access&quot;,&quot;baseProduction&quot;,&quot;basePrice&quot;,&quot;risk&quot;,&quot;shiftsPerDay&quot;,&quot;comment&quot;];
+    ids.forEach(id =&gt; document.getElementById(id).addEventListener(&quot;input&quot;, calculate));
+
+    function rub(n) {
+      return Math.round(n).toLocaleString(&quot;ru-RU&quot;) + &quot; ₽&quot;;
+    }
+
+    function calculate() {
+      const area = +document.getElementById(&quot;area&quot;).value || 0;
+      const posts = +document.getElementById(&quot;posts&quot;).value || 1;
+      const g = +document.getElementById(&quot;geometry&quot;).value;
+      const c = +document.getElementById(&quot;condition&quot;).value;
+      const s = +document.getElementById(&quot;standard&quot;).value;
+      const a = +document.getElementById(&quot;access&quot;).value;
+      const baseProduction = +document.getElementById(&quot;baseProduction&quot;).value || 90;
+      const basePrice = +document.getElementById(&quot;basePrice&quot;).value || 750;
+      const risk = (+document.getElementById(&quot;risk&quot;).value || 0) / 100;
+      const shiftsPerDay = +document.getElementById(&quot;shiftsPerDay&quot;).value || 1;
+      const comment = document.getElementById(&quot;comment&quot;).value;
+
+      const coef = g * c * s * a;
+      const prodOne = Math.max(15, baseProduction / coef);
+      const prodAll = prodOne * posts;
+      const shifts = area / prodAll;
+      const days = shifts / shiftsPerDay;
+
+      const priceMid = basePrice * coef * (1 + risk);
+      const priceMin = priceMid * 0.9;
+      const priceMax = priceMid * 1.12;
+      const totalMin = priceMin * area;
+      const totalMax = priceMax * area;
+
+      document.getElementById(&quot;priceRange&quot;).innerText = `${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м²`;
+      document.getElementById(&quot;production&quot;).innerText = `Выработка: ${Math.round(prodOne)} м²/смена на пост`;
+      document.getElementById(&quot;days&quot;).innerText = `Срок: ~${Math.ceil(days)} дн.`;
+      document.getElementById(&quot;total&quot;).innerText = `Итого: ${rub(totalMin)} – ${rub(totalMax)}`;
+      document.getElementById(&quot;coef&quot;).innerText = coef.toFixed(2);
+      document.getElementById(&quot;prodOne&quot;).innerText = `${Math.round(prodOne)} м²/смена`;
+      document.getElementById(&quot;prodAll&quot;).innerText = `${Math.round(prodAll)} м²/смена`;
+      document.getElementById(&quot;shifts&quot;).innerText = `${shifts.toFixed(1)} смен`;
+      document.getElementById(&quot;sumRange&quot;).innerText = `${rub(totalMin)} – ${rub(totalMax)}`;
+
+      const text = `Предварительная оценка по очистке металла под покраску\n\nПо предоставленной информации ориентировочная стоимость абразивоструйной очистки металлоконструкций составляет ${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м².\n\nОриентировочная выработка одного поста: ${Math.round(prodOne)} м² за смену.\nПри ${posts} пост(ах) общий темп работ: около ${Math.round(prodAll)} м² за смену.\nОриентировочный срок выполнения объема ${area} м²: ${Math.ceil(days)} рабоч. дн.\n\nИтого предварительно: ${rub(totalMin)} – ${rub(totalMax)}.\n\n${comment}\n\nФинальная стоимость фиксируется после осмотра или пробного участка, так как на цену влияет фактическая степень коррозии, старое покрытие, требуемая степень очистки Sa 2 / Sa 2.5 и удобство доступа к конструкциям.`;
+
+      document.getElementById(&quot;clientText&quot;).innerText = text;
+
+      let warn = &quot;&quot;;
+      if (coef &gt; 3.2) warn = &quot;Внимание: высокий коэффициент сложности. Лучше считать через пробник и не обещать твердую цену без осмотра.&quot;;
+      document.getElementById(&quot;warning&quot;).innerText = warn;
+    }
+
+    function copyClientText() {
+      navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText);
+      alert(&quot;Текст скопирован&quot;);
+    }
+
+    calculate();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+    </section>
+  </main>
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
