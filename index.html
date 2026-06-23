@@ -76,6 +76,7 @@
       <div class="tabs">
         <button class="tab active" onclick="showTab('fire', this)">Пожар</button>
         <button class="tab" onclick="showTab('metal', this)">Металл</button>
+        <button class="tab" onclick="showTab('facade', this)">АСТ кирпич_фасад</button>
       </div>
     </div>
   </header>
@@ -442,6 +443,132 @@
       alert(&quot;Текст скопирован&quot;);
     }
 
+    calculate();
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+    </section>
+    <section id="facade" class="panel">
+      <iframe title="Калькулятор АСТ кирпичного фасада" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot; /&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+  &lt;title&gt;Калькулятор АСТ кирпичного фасада&lt;/title&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; color: #1f2933; }
+    .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; }
+    .card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 22px 0 8px; font-size: 16px; }
+    .note { color: #667085; font-size: 14px; margin-bottom: 18px; line-height: 1.4; }
+    label { display: block; font-weight: 700; margin: 14px 0 6px; }
+    input, select, textarea { width: 100%; box-sizing: border-box; padding: 11px; border: 1px solid #d0d5dd; border-radius: 10px; font-size: 15px; background: #fff; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .opt { border: 1px solid #eaecf0; border-radius: 12px; padding: 12px 14px; margin-top: 10px; background: #fafbfc; }
+    .optHead { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .optHead input { width: auto; }
+    .optBody { margin-top: 10px; }
+    .result { font-size: 18px; line-height: 1.45; }
+    .big { font-size: 30px; font-weight: 800; margin: 6px 0 12px; }
+    .pill { display: inline-block; padding: 7px 10px; border-radius: 999px; background: #eef2ff; margin: 4px 4px 4px 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+    td, th { border-bottom: 1px solid #eaecf0; padding: 9px 6px; text-align: left; vertical-align: top; }
+    th { color: #667085; font-weight: 700; }
+    button { width: 100%; margin-top: 16px; padding: 13px; border: 0; border-radius: 12px; background: #111827; color: #fff; font-size: 16px; cursor: pointer; }
+    .clientText { white-space: pre-wrap; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 12px; padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.45; }
+    .section { border-top: 1px solid #eaecf0; padding-top: 10px; margin-top: 12px; }
+    @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } .grid2, .grid3 { grid-template-columns: 1fr; } }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;wrap&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;h1&gt;Калькулятор АСТ кирпичного фасада&lt;/h1&gt;
+      &lt;div class=&quot;note&quot;&gt;Абразивоструйная очистка кирпичного фасада + опционально укрепляющий состав, гидрофобизация и расшивка швов. Предварительная оценка.&lt;/div&gt;
+      &lt;h3&gt;1. База объекта&lt;/h3&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Площадь фасада, м²&lt;/label&gt;&lt;input id=&quot;area&quot; type=&quot;number&quot; value=&quot;500&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Базовая ставка пескоструя, ₽/м²&lt;/label&gt;&lt;input id=&quot;baseRate&quot; type=&quot;number&quot; value=&quot;300&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Высота / этажность&lt;/label&gt;&lt;select id=&quot;heightCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;1–2 этажа — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot; selected&gt;3–5 этажей — 1.2&lt;/option&gt;&lt;option value=&quot;1.40&quot;&gt;6–9 этажей — 1.4&lt;/option&gt;&lt;option value=&quot;1.70&quot;&gt;высотка — 1.7&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Тип кирпича&lt;/label&gt;&lt;select id=&quot;brickCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;керамический — 1.0&lt;/option&gt;&lt;option value=&quot;1.10&quot;&gt;силикатный — 1.1&lt;/option&gt;&lt;option value=&quot;1.40&quot;&gt;старый / исторический — 1.4&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Степень загрязнения&lt;/label&gt;&lt;select id=&quot;dirtCoef&quot;&gt;&lt;option value=&quot;1.00&quot;&gt;лёгкое — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot; selected&gt;среднее — 1.2&lt;/option&gt;&lt;option value=&quot;1.45&quot;&gt;сильное (копоть/высолы) — 1.45&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Доступ&lt;/label&gt;&lt;select id=&quot;accessCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;леса — 1.0&lt;/option&gt;&lt;option value=&quot;1.15&quot;&gt;подъёмник — 1.15&lt;/option&gt;&lt;option value=&quot;1.50&quot;&gt;промальп — 1.5&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Сегмент объекта&lt;/label&gt;&lt;select id=&quot;segmentCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;промка — 1.0&lt;/option&gt;&lt;option value=&quot;1.10&quot;&gt;жильё — 1.1&lt;/option&gt;&lt;option value=&quot;1.35&quot;&gt;элитка / историч. — 1.35&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Заказчик / ТУ&lt;/label&gt;&lt;select id=&quot;clientCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;обычный — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;требовательный — 1.2&lt;/option&gt;&lt;option value=&quot;1.40&quot;&gt;жёсткий контроль — 1.4&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;h3&gt;2. Организация работ&lt;/h3&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Тихие часы&lt;/label&gt;&lt;select id=&quot;quietCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;нет — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;есть — 1.2&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ежедневная уборка абразива&lt;/label&gt;&lt;select id=&quot;cleanCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;нет — 1.0&lt;/option&gt;&lt;option value=&quot;1.15&quot;&gt;да — 1.15&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Требования к укрывке&lt;/label&gt;&lt;select id=&quot;coverCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;базовые — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;повышенные — 1.2&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Защитная сетка / укрытие&lt;/label&gt;&lt;select id=&quot;netCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;не нужна — 1.0&lt;/option&gt;&lt;option value=&quot;1.10&quot;&gt;нужна — 1.1&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Место для подъёмной техники&lt;/label&gt;&lt;select id=&quot;spaceCoef&quot;&gt;&lt;option value=&quot;1.00&quot; selected&gt;есть — 1.0&lt;/option&gt;&lt;option value=&quot;1.20&quot;&gt;стеснённо — 1.2&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;h3&gt;3. Опциональные блоки&lt;/h3&gt;
+      &lt;div class=&quot;opt&quot;&gt;&lt;div class=&quot;optHead&quot;&gt;&lt;input id=&quot;reinfOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label style=&quot;margin:0&quot;&gt;Укрепляющий / восстанавливающий состав&lt;/label&gt;&lt;/div&gt;&lt;div class=&quot;optBody grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Площадь, м²&lt;/label&gt;&lt;input id=&quot;reinfArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка, ₽/м²&lt;/label&gt;&lt;input id=&quot;reinfRate&quot; type=&quot;number&quot; value=&quot;150&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;opt&quot;&gt;&lt;div class=&quot;optHead&quot;&gt;&lt;input id=&quot;hydroOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label style=&quot;margin:0&quot;&gt;Гидрофобизация&lt;/label&gt;&lt;/div&gt;&lt;div class=&quot;optBody grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Площадь, м²&lt;/label&gt;&lt;input id=&quot;hydroArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка за слой, ₽/м²&lt;/label&gt;&lt;input id=&quot;hydroRate&quot; type=&quot;number&quot; value=&quot;100&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Слоёв&lt;/label&gt;&lt;input id=&quot;hydroLayers&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;opt&quot;&gt;&lt;div class=&quot;optHead&quot;&gt;&lt;input id=&quot;jointOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label style=&quot;margin:0&quot;&gt;Расшивка / восстановление швов&lt;/label&gt;&lt;/div&gt;&lt;div class=&quot;optBody grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Площадь швов, м²&lt;/label&gt;&lt;input id=&quot;jointArea&quot; type=&quot;number&quot; value=&quot;0&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ставка, ₽/м²&lt;/label&gt;&lt;input id=&quot;jointRate&quot; type=&quot;number&quot; value=&quot;400&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;h3&gt;4. Прочее&lt;/h3&gt;
+      &lt;div class=&quot;grid3&quot;&gt;&lt;div&gt;&lt;label&gt;Резерв, %&lt;/label&gt;&lt;input id=&quot;reserve&quot; type=&quot;number&quot; value=&quot;10&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Норма, м²/чел-день&lt;/label&gt;&lt;input id=&quot;prodNorm&quot; type=&quot;number&quot; value=&quot;40&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Бригада, чел.&lt;/label&gt;&lt;input id=&quot;crew&quot; type=&quot;number&quot; value=&quot;4&quot; min=&quot;1&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;label&gt;Комментарий&lt;/label&gt;&lt;input id=&quot;comment&quot; value=&quot;Стоимость предварительная. Финальная фиксация после осмотра и пробного участка.&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;&lt;h2&gt;Расчет&lt;/h2&gt;&lt;div class=&quot;result&quot;&gt;Ориентировочная стоимость:&lt;div class=&quot;big&quot; id=&quot;totalPrice&quot;&gt;—&lt;/div&gt;&lt;span class=&quot;pill&quot; id=&quot;ratePill&quot;&gt;—&lt;/span&gt;&lt;span class=&quot;pill&quot; id=&quot;daysPill&quot;&gt;—&lt;/span&gt;&lt;/div&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Показатель&lt;/th&gt;&lt;th&gt;Значение&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Пескоструй (база)&lt;/td&gt;&lt;td id=&quot;baseSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Итоговый коэффициент&lt;/td&gt;&lt;td id=&quot;coefSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Укрепляющий состав&lt;/td&gt;&lt;td id=&quot;reinfSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Гидрофобизация&lt;/td&gt;&lt;td id=&quot;hydroSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Расшивка швов&lt;/td&gt;&lt;td id=&quot;jointSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Резерв&lt;/td&gt;&lt;td id=&quot;reserveSum&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Расчетный срок&lt;/td&gt;&lt;td id=&quot;duration&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;div class=&quot;section&quot;&gt;&lt;div id=&quot;warning&quot; class=&quot;note&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;button onclick=&quot;copyClientText()&quot;&gt;Скопировать текст для клиента&lt;/button&gt;&lt;div class=&quot;clientText&quot; id=&quot;clientText&quot;&gt;&lt;/div&gt;&lt;button onclick=&quot;saveCalc()&quot; style=&quot;background:#0b7a3b&quot;&gt;💾 Сохранить расчёт&lt;/button&gt;&lt;div class=&quot;section&quot;&gt;&lt;h3 style=&quot;margin-top:4px&quot;&gt;Сохранённые расчёты&lt;/h3&gt;&lt;div id=&quot;savedList&quot; class=&quot;note&quot;&gt;Пока пусто.&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    const ids = [&quot;area&quot;,&quot;baseRate&quot;,&quot;heightCoef&quot;,&quot;brickCoef&quot;,&quot;dirtCoef&quot;,&quot;accessCoef&quot;,&quot;segmentCoef&quot;,&quot;clientCoef&quot;,&quot;quietCoef&quot;,&quot;cleanCoef&quot;,&quot;coverCoef&quot;,&quot;netCoef&quot;,&quot;spaceCoef&quot;,&quot;reinfOn&quot;,&quot;reinfArea&quot;,&quot;reinfRate&quot;,&quot;hydroOn&quot;,&quot;hydroArea&quot;,&quot;hydroRate&quot;,&quot;hydroLayers&quot;,&quot;jointOn&quot;,&quot;jointArea&quot;,&quot;jointRate&quot;,&quot;reserve&quot;,&quot;prodNorm&quot;,&quot;crew&quot;,&quot;comment&quot;];
+    ids.forEach(id =&gt; { const el = document.getElementById(id); el.addEventListener(&quot;input&quot;, calculate); el.addEventListener(&quot;change&quot;, calculate); });
+    function rub(n) { return Math.round(n).toLocaleString(&quot;ru-RU&quot;) + &quot; ₽&quot;; }
+    function num(id) { return +document.getElementById(id).value || 0; }
+    function calculate() {
+      const area = num(&quot;area&quot;), baseRate = num(&quot;baseRate&quot;);
+      const fullCoef = num(&quot;heightCoef&quot;) * num(&quot;brickCoef&quot;) * num(&quot;dirtCoef&quot;) * num(&quot;accessCoef&quot;) * num(&quot;segmentCoef&quot;) * num(&quot;clientCoef&quot;) * num(&quot;quietCoef&quot;) * num(&quot;cleanCoef&quot;) * num(&quot;coverCoef&quot;) * num(&quot;netCoef&quot;) * num(&quot;spaceCoef&quot;);
+      const baseWorks = area * baseRate * fullCoef;
+      const reinfOn = document.getElementById(&quot;reinfOn&quot;).checked;
+      const hydroOn = document.getElementById(&quot;hydroOn&quot;).checked;
+      const jointOn = document.getElementById(&quot;jointOn&quot;).checked;
+      const reinfWorks = reinfOn ? num(&quot;reinfArea&quot;) * num(&quot;reinfRate&quot;) : 0;
+      const hydroWorks = hydroOn ? num(&quot;hydroArea&quot;) * num(&quot;hydroRate&quot;) * (num(&quot;hydroLayers&quot;) || 1) : 0;
+      const jointWorks = jointOn ? num(&quot;jointArea&quot;) * num(&quot;jointRate&quot;) : 0;
+      const subtotal = baseWorks + reinfWorks + hydroWorks + jointWorks;
+      const reserve = subtotal * num(&quot;reserve&quot;) / 100;
+      const total = subtotal + reserve;
+      const effectiveRate = area &gt; 0 ? total / area : 0;
+      const prodNorm = num(&quot;prodNorm&quot;) || 40, crew = num(&quot;crew&quot;) || 1;
+      const manDays = area / prodNorm;
+      const days = manDays / crew;
+      document.getElementById(&quot;totalPrice&quot;).innerText = rub(total);
+      document.getElementById(&quot;ratePill&quot;).innerText = `Эффективно: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м²`;
+      document.getElementById(&quot;daysPill&quot;).innerText = `Срок: ~${Math.ceil(days)} раб. дн. при ${crew} чел.`;
+      document.getElementById(&quot;baseSum&quot;).innerText = rub(baseWorks);
+      document.getElementById(&quot;coefSum&quot;).innerText = fullCoef.toFixed(2);
+      document.getElementById(&quot;reinfSum&quot;).innerText = reinfOn ? rub(reinfWorks) : &quot;— выкл&quot;;
+      document.getElementById(&quot;hydroSum&quot;).innerText = hydroOn ? rub(hydroWorks) : &quot;— выкл&quot;;
+      document.getElementById(&quot;jointSum&quot;).innerText = jointOn ? rub(jointWorks) : &quot;— выкл&quot;;
+      document.getElementById(&quot;reserveSum&quot;).innerText = rub(reserve);
+      document.getElementById(&quot;duration&quot;).innerText = `~${Math.ceil(days)} рабочих дней`;
+      let warning = &quot;&quot;;
+      if (effectiveRate &lt; 350) warning = &quot;⚠️ Ниже 350 ₽/м² — низкая ставка для фасада. Проверьте объём допработ и коэффициенты.&quot;;
+      else if (effectiveRate &lt; 600) warning = &quot;✅ Рабочая зона. Зафиксируйте отдельно укрепляющий состав, гидрофобизацию и швы.&quot;;
+      else warning = &quot;✅ Высокая ставка — сложный или премиальный объект. Обоснуйте через высоту, доступ, сегмент и допблоки.&quot;;
+      document.getElementById(&quot;warning&quot;).innerText = warning;
+      const parts = [];
+      if (reinfOn) parts.push(&quot;укрепляющий/восстанавливающий состав&quot;);
+      if (hydroOn) parts.push(`гидрофобизация (${num(&quot;hydroLayers&quot;)||1} сл.)`);
+      if (jointOn) parts.push(&quot;расшивка швов&quot;);
+      const extra = parts.length ? `\n— дополнительно: ${parts.join(&quot;, &quot;)};` : &quot;&quot;;
+      document.getElementById(&quot;clientText&quot;).innerText = `Предварительная оценка работ по кирпичному фасаду\n\nПо предоставленной информации ориентировочная стоимость комплекса работ составляет ${rub(total)}.\n\nВ расчет включены:\n— абразивоструйная очистка фасада по площади около ${area} м²;\n— поправка на высоту, тип кирпича, загрязнение, доступ, сегмент и организацию работ;${extra}\n— резерв на непредвиденные работы.\n\nОриентировочная эффективная ставка: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м².\nОриентировочный срок: около ${Math.ceil(days)} рабочих дней при бригаде ${crew} человек.\n\n${document.getElementById(&quot;comment&quot;).value}`;
+    }
+    function copyClientText() { navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText); alert(&quot;Текст скопирован&quot;); }
+        var LS_KEY = &quot;facadeCalcs&quot;;
+    function getSaved() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch(e) { return []; } }
+    function setSaved(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e) { alert(&quot;Не удалось сохранить (хранилище недоступно)&quot;); } }
+    function saveCalc() {
+      var arr = getSaved();
+      var rec = { t: new Date().toLocaleString(&quot;ru-RU&quot;), area: num(&quot;area&quot;), total: document.getElementById(&quot;totalPrice&quot;).innerText, rate: document.getElementById(&quot;ratePill&quot;).innerText, text: document.getElementById(&quot;clientText&quot;).innerText };
+      arr.unshift(rec);
+      setSaved(arr);
+      renderSaved();
+    }
+    function delCalc(i) { var arr = getSaved(); arr.splice(i,1); setSaved(arr); renderSaved(); }
+    function renderSaved() {
+      var arr = getSaved(), box = document.getElementById(&quot;savedList&quot;);
+      if (!arr.length) { box.innerHTML = &quot;Пока пусто.&quot;; return; }
+      box.innerHTML = arr.map(function(r,i){ return &quot;&lt;div style=\&quot;border-bottom:1px solid #eaecf0;padding:8px 0\&quot;&gt;&lt;b&gt;&quot; + r.total + &quot;&lt;/b&gt; · &quot; + r.area + &quot; м² · &quot; + r.rate + &quot;&lt;br&gt;&lt;span style=\&quot;color:#98a2b3\&quot;&gt;&quot; + r.t + &quot;&lt;/span&gt; &lt;a href=\&quot;#\&quot; onclick=\&quot;delCalc(&quot; + i + &quot;);return false;\&quot; style=\&quot;color:#b42318;margin-left:8px\&quot;&gt;удалить&lt;/a&gt;&lt;/div&gt;&quot;; }).join(&quot;&quot;);
+    }
+    renderSaved();
     calculate();
   &lt;/script&gt;
 &lt;/body&gt;
