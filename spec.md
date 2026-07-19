@@ -238,3 +238,95 @@ MultiCallculator — веб-инструмент для менеджеров Glo
 
 - `Calculation.object_id` = `Calculation.service_object_id`;
 - `created_by` = `created_by_user_id`.
+
+## Database recommendation
+
+Рекомендуемая база данных: **Supabase (managed PostgreSQL)**.
+
+Исходные условия выбора:
+
+- до 10 пользователей в ближайший год;
+- realtime-обновления не обязательны;
+- отдельное мобильное приложение пока не планируется;
+- нужен облачный сервис без самостоятельного обслуживания сервера;
+- продукт используется внутри Global Cleaning и 112 Cleaning в одном рабочем пространстве.
+
+**За:** Supabase соответствует реляционной схеме с PK/FK и даёт готовые PostgreSQL, Auth и Row Level Security. Это позволяет подключить вход менеджеров и ограничение доступа по `workspace_id` без разработки отдельного backend с нуля.
+
+**Против:** появляется зависимость от облачного сервиса. Бесплатный проект может приостанавливаться после недели бездействия, поэтому для постоянной рабочей эксплуатации впоследствии может потребоваться платный тариф или перенос на собственный PostgreSQL.
+
+Почему не основные альтернативы:
+
+- Firebase/Firestore менее удобен для этой схемы из шести связанных таблиц, потому что использует документную NoSQL-модель вместо обычных FK.
+- SQLite подходит для одного локального устройства, но не для общей работы нескольких менеджеров.
+- Обычный PostgreSQL даёт полный контроль, но потребует самостоятельно настраивать сервер, авторизацию, API и резервное копирование.
+- Realtime-возможности Convex для первой версии не нужны.
+
+## Mermaid ER diagram
+
+```mermaid
+erDiagram
+    Workspace ||--o{ User : has
+    Workspace ||--o{ Client : has
+    Client ||--o{ ServiceObject : owns
+    ServiceObject ||--o{ Calculation : has
+    User ||--o{ Calculation : creates
+    Calculation ||--o{ CalculationVersion : versions
+    User ||--o{ CalculationVersion : saves
+
+    Workspace {
+        uuid id PK
+        string name
+        string status
+        datetime created_at
+    }
+
+    User {
+        uuid id PK
+        uuid workspace_id FK
+        string name
+        string email
+        string role
+        string status
+        datetime created_at
+    }
+
+    Client {
+        uuid id PK
+        uuid workspace_id FK
+        string name
+        string phone
+        string email
+        string status
+        datetime created_at
+    }
+
+    ServiceObject {
+        uuid id PK
+        uuid client_id FK
+        string title
+        string address
+        string status
+        datetime created_at
+    }
+
+    Calculation {
+        uuid id PK
+        uuid service_object_id FK
+        uuid created_by_user_id FK
+        string type
+        string status
+        string title
+        datetime created_at
+    }
+
+    CalculationVersion {
+        uuid id PK
+        uuid calculation_id FK
+        uuid created_by_user_id FK
+        int version
+        json input_data
+        json output_data
+        datetime created_at
+    }
+```
