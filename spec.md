@@ -1,220 +1,240 @@
-# Data Schema — MultiCallculator
+# MultiCallculator — Product and Data Specification
 
-## 1. Назначение
+## Product
 
-MultiCallculator — статическое веб-приложение для предварительной оценки стоимости и срока клининговых работ. Приложение содержит три независимых калькулятора:
+MultiCallculator — веб-инструмент для менеджеров Global Cleaning и 112 Cleaning. Менеджер выбирает вид работ, вводит параметры объекта и получает предварительную стоимость, срок выполнения и готовый текст для клиента.
 
-1. работы после пожара;
-2. абразивоструйная очистка металла;
-3. абразивоструйная очистка кирпичного фасада.
+Основные сценарии:
 
-Бэкенда и серверной базы данных нет. Введённые значения хранятся в DOM текущего `iframe`, результаты вычисляются в браузере. Только сохранённые расчёты фасада записываются в `localStorage`.
+1. Менеджер создаёт клиента и его объект.
+2. Для объекта менеджер создаёт расчёт: пожар, металл или кирпичный фасад.
+3. Менеджер меняет параметры и сохраняет новую версию, не теряя предыдущую.
+4. Менеджер копирует итоговый текст и отправляет его клиенту.
+5. Администратор управляет пользователями и видит все расчёты компании.
 
-## 2. Общая модель данных
+Роли:
 
-```text
-MultiCallculator
-├── FireCalculation
-├── MetalCalculation
-└── FacadeCalculation
-    └── SavedFacadeCalculation[] → localStorage["facadeCalcs"]
-```
+- `admin` — управляет пользователями и всеми данными рабочего пространства;
+- `manager` — создаёт клиентов, объекты, расчёты и их версии.
 
-Каждый расчёт состоит из:
+## Data
 
-- `input` — данные, введённые менеджером;
-- `result` — вычисляемые значения;
-- `clientText` — готовый текст предварительной оценки для клиента.
+Это целевая data-схема для будущего backend. Текущее приложение работает без сервера, а сохранённые расчёты фасада хранит в `localStorage`. При подключении базы данных источником правды должна стать схема ниже.
 
-Денежные значения в модели хранятся как числа в рублях. Площади — в м², продолжительность — в рабочих днях, коэффициенты — положительные десятичные числа.
+### 1. Workspace
 
-## 3. Расчёт после пожара
+Рабочее пространство компании. Изолирует пользователей и клиентов одной компании от данных другой.
 
-### FireCalculationInput
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор |
+| `name` | string | no | — | Название компании или команды |
+| `status` | workspace_status | no | — | Текущее состояние рабочего пространства |
+| `created_at` | datetime | no | — | Дата создания |
 
-| Поле | Тип | Обязательное | Значение по умолчанию | Описание |
-|---|---|---:|---:|---|
-| `area` | number | да | 1000 | Площадь по полу, м² |
-| `baseRate` | number | да | 4000 | Базовая ставка, ₽/м² |
-| `heightCoef` | number | да | из выбранной опции | Коэффициент высоты |
-| `clientCoef` | number | да | из выбранной опции | Сложность заказчика и контроля |
-| `finishCoef` | number | да | из выбранной опции | Деликатность отделки |
-| `accessCoef` | number | да | из выбранной опции | Доступ и скрытые риски |
-| `urgencyCoef` | number | да | из выбранной опции | Срочность |
-| `nightCoef` | number | да | из выбранной опции | Режим работ |
-| `demArea` | number | нет | 0 | Площадь демонтажа, м² |
-| `demRate` | number | нет | 900 | Ставка демонтажа, ₽/м² |
-| `waste` | number | нет | 0 | Вывоз и контейнеры, ₽ |
-| `stairsArea` | number | нет | 0 | Площадь лестниц по проекции, м² |
-| `stairsMult` | number | нет | из выбранной опции | Коэффициент сложности лестниц |
-| `stairsRate` | number | нет | 4000 | Ставка лестниц, ₽/м² |
-| `voidArea` | number | нет | 0 | Площадь скрытых полостей, м² |
-| `voidRate` | number | нет | 1800 | Ставка полостей, ₽/м² |
-| `hatches` | number | нет | 0 | Количество лючков, шт. |
-| `hatchRate` | number | нет | 700 | Ставка за лючок, ₽/шт. |
-| `reserve` | number | да | 10 | Резерв, % |
-| `prodNorm` | number | да | 8 | Норма, м²/чел.-день |
-| `manDayCost` | number | да | 5500 | Стоимость чел.-дня, ₽ |
-| `crew` | integer | да | 8 | Численность бригады |
-| `extraCostPct` | number | да | 30 | Дополнительные расходы к труду, % |
-| `comment` | string | нет | заданный текст | Комментарий для клиента |
+### 2. User
 
-### FireCalculationResult
+Пользователь MultiCallculator: администратор или менеджер.
 
-| Поле | Тип | Описание |
-|---|---|---|
-| `fullCoef` | number | Произведение шести коэффициентов сложности |
-| `commercialCoef` | number | `1 + (fullCoef - 1) × 0.35` |
-| `baseWorks` | number | `area × baseRate × commercialCoef` |
-| `demWorks` | number | `demArea × demRate + waste` |
-| `stairsWorks` | number | `stairsArea × stairsMult × stairsRate` |
-| `voidWorks` | number | `voidArea × voidRate + hatches × hatchRate` |
-| `subtotal` | number | Сумма основных и дополнительных работ |
-| `reserveAmount` | number | `subtotal × reserve / 100` |
-| `total` | number | `subtotal + reserveAmount` |
-| `effectiveRate` | number | `total / area` |
-| `manDays` | number | Требуемые человеко-дни |
-| `days` | number | `manDays / crew` |
-| `productionCost` | number | Расчётная себестоимость труда |
-| `grossMargin` | number | `total - productionCost` |
-| `grossMarginPct` | number | Валовая маржа, % |
-| `warning` | string | Подсказка менеджеру по эффективной ставке |
-| `clientText` | string | Текст предварительной оценки для клиента |
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор |
+| `workspace_id` | uuid | no | FK → Workspace.id | Рабочее пространство пользователя |
+| `name` | string | no | — | Имя пользователя |
+| `email` | string | no | UNIQUE | Email для входа |
+| `role` | user_role | no | — | Роль и уровень доступа |
+| `status` | user_status | no | — | Активен или архивирован |
+| `created_at` | datetime | no | — | Дата создания |
 
-## 4. Расчёт очистки металла
+### 3. Client
 
-### MetalCalculationInput
+Заказчик, для которого выполняются расчёты.
 
-| Поле | Тип | Обязательное | По умолчанию | Описание |
-|---|---|---:|---:|---|
-| `area` | number | да | 500 | Площадь металла, м² |
-| `posts` | integer | да | 1 | Количество постов |
-| `geometry` | number | да | из выбранной опции | Коэффициент геометрии |
-| `condition` | number | да | из выбранной опции | Коэффициент состояния поверхности |
-| `standard` | number | да | из выбранной опции | Коэффициент степени очистки |
-| `access` | number | да | из выбранной опции | Коэффициент доступа и условий |
-| `baseProduction` | number | да | 90 | Выработка одного поста, м²/смена |
-| `basePrice` | number | да | 750 | Базовая цена, ₽/м² |
-| `risk` | number | да | 20 | Минимальная маржа/риск, % |
-| `shiftsPerDay` | number | да | 1 | Количество смен в день |
-| `comment` | string | нет | заданный текст | Комментарий для клиента |
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор |
+| `workspace_id` | uuid | no | FK → Workspace.id | Владелец данных клиента |
+| `name` | string | no | — | Имя человека или название организации |
+| `phone` | string | yes | — | Контактный телефон |
+| `email` | string | yes | — | Контактный email |
+| `status` | client_status | no | — | Активный или архивный клиент |
+| `created_at` | datetime | no | — | Дата создания |
 
-### MetalCalculationResult
+### 4. ServiceObject
 
-| Поле | Тип | Описание |
-|---|---|---|
-| `coef` | number | `geometry × condition × standard × access` |
-| `prodOne` | number | Выработка одного поста: не менее 15 м²/смена |
-| `prodAll` | number | `prodOne × posts` |
-| `shifts` | number | `area / prodAll` |
-| `days` | number | `shifts / shiftsPerDay` |
-| `priceMid` | number | `basePrice × coef × (1 + risk / 100)` |
-| `priceMin` | number | `priceMid × 0.9` |
-| `priceMax` | number | `priceMid × 1.12` |
-| `totalMin` | number | `priceMin × area` |
-| `totalMax` | number | `priceMax × area` |
-| `warning` | string | Предупреждение при высоком коэффициенте |
-| `clientText` | string | Текст предварительной оценки для клиента |
+Объект клиента, на котором планируются работы: квартира, склад, фасад или металлоконструкции.
 
-## 5. Расчёт кирпичного фасада
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор |
+| `client_id` | uuid | no | FK → Client.id | Клиент-владелец объекта |
+| `title` | string | no | — | Короткое название объекта |
+| `address` | string | yes | — | Адрес объекта |
+| `status` | object_status | no | — | Активный или архивный объект |
+| `created_at` | datetime | no | — | Дата создания |
 
-### FacadeCalculationInput
+### 5. Calculation
 
-| Поле | Тип | Обязательное | По умолчанию | Описание |
-|---|---|---:|---:|---|
-| `area` | number | да | 500 | Площадь фасада, м² |
-| `baseRate` | number | да | 300 | Базовая ставка пескоструя, ₽/м² |
-| `heightCoef` | number | да | из выбранной опции | Высота/этажность |
-| `brickCoef` | number | да | из выбранной опции | Тип кирпича |
-| `dirtCoef` | number | да | из выбранной опции | Степень загрязнения |
-| `accessCoef` | number | да | из выбранной опции | Доступ |
-| `segmentCoef` | number | да | из выбранной опции | Сегмент объекта |
-| `clientCoef` | number | да | из выбранной опции | Требования заказчика |
-| `quietCoef` | number | да | из выбранной опции | Ограничение по тихим часам |
-| `cleanCoef` | number | да | из выбранной опции | Ежедневная уборка абразива |
-| `coverCoef` | number | да | из выбранной опции | Требования к укрывке |
-| `netCoef` | number | да | из выбранной опции | Защитная сетка/укрытие |
-| `spaceCoef` | number | да | из выбранной опции | Место для подъёмной техники |
-| `reinfOn` | boolean | да | false | Включён ли укрепляющий состав |
-| `reinfArea` | number | условно | 0 | Площадь укрепления, м² |
-| `reinfRate` | number | условно | 150 | Ставка укрепления, ₽/м² |
-| `hydroOn` | boolean | да | false | Включена ли гидрофобизация |
-| `hydroArea` | number | условно | 0 | Площадь гидрофобизации, м² |
-| `hydroRate` | number | условно | 100 | Ставка за слой, ₽/м² |
-| `hydroLayers` | integer | условно | 1 | Количество слоёв |
-| `jointOn` | boolean | да | false | Включено ли восстановление швов |
-| `jointArea` | number | условно | 0 | Площадь швов, м² |
-| `jointRate` | number | условно | 400 | Ставка швов, ₽/м² |
-| `reserve` | number | да | 10 | Резерв, % |
-| `prodNorm` | number | да | 40 | Норма, м²/чел.-день |
-| `crew` | integer | да | 4 | Численность бригады |
-| `comment` | string | нет | заданный текст | Комментарий для клиента |
+Карточка расчёта для конкретного объекта. Определяет тип калькулятора и хранит общий жизненный цикл расчёта.
 
-Условные поля участвуют в расчёте только при значении `true` у соответствующего переключателя `*On`.
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор |
+| `service_object_id` | uuid | no | FK → ServiceObject.id | Объект, для которого сделан расчёт |
+| `created_by_user_id` | uuid | no | FK → User.id | Менеджер — автор расчёта |
+| `type` | calculation_type | no | — | Пожар, металл или фасад |
+| `status` | calculation_status | no | — | Черновик, финальный или архивный |
+| `title` | string | no | — | Название расчёта |
+| `created_at` | datetime | no | — | Дата создания |
 
-### FacadeCalculationResult
+### 6. CalculationVersion
 
-| Поле | Тип | Описание |
-|---|---|---|
-| `fullCoef` | number | Произведение 11 коэффициентов |
-| `baseWorks` | number | `area × baseRate × fullCoef` |
-| `reinfWorks` | number | `reinfArea × reinfRate`, если блок включён |
-| `hydroWorks` | number | `hydroArea × hydroRate × hydroLayers`, если блок включён |
-| `jointWorks` | number | `jointArea × jointRate`, если блок включён |
-| `subtotal` | number | Сумма всех включённых работ |
-| `reserveAmount` | number | `subtotal × reserve / 100` |
-| `total` | number | `subtotal + reserveAmount` |
-| `effectiveRate` | number | `total / area` |
-| `manDays` | number | `area / prodNorm` |
-| `days` | number | `manDays / crew` |
-| `warning` | string | Подсказка менеджеру по ставке |
-| `clientText` | string | Текст предварительной оценки для клиента |
+Неизменяемая версия расчёта. При изменении площади, ставки или коэффициентов создаётся новая запись.
 
-## 6. Сохраняемый расчёт фасада
+| field | type | nullable | key | note |
+|---|---|---:|---|---|
+| `id` | uuid | no | PK | Уникальный идентификатор версии |
+| `calculation_id` | uuid | no | FK → Calculation.id | Родительский расчёт |
+| `created_by_user_id` | uuid | no | FK → User.id | Автор этой версии |
+| `version` | integer | no | UNIQUE* | Порядковый номер внутри расчёта |
+| `input_data` | json | no | — | Все введённые площади, ставки, коэффициенты и опции |
+| `output_data` | json | no | — | Итог, срок, ставка, предупреждение и текст для клиента |
+| `created_at` | datetime | no | — | Дата сохранения версии |
 
-Ключ хранилища: `facadeCalcs`.
+`UNIQUE*` означает составную уникальность пары `calculation_id + version`.
 
-Значение: JSON-массив объектов `SavedFacadeCalculation`. Новая запись добавляется в начало массива.
-
-| Поле | Тип | Обязательное | Описание |
-|---|---|---:|---|
-| `t` | string | да | Локальные дата и время сохранения |
-| `area` | number | да | Площадь фасада, м² |
-| `total` | string | да | Отформатированная итоговая сумма, например `"415 800 ₽"` |
-| `rate` | string | да | Отформатированная эффективная ставка |
-| `text` | string | да | Полный текст для клиента |
-
-Пример:
+Пример содержимого версии:
 
 ```json
-[
-  {
-    "t": "19.07.2026, 14:30:00",
+{
+  "calculation_id": "6dc63ca0-3269-4ff4-bf1a-f28c69b1e28f",
+  "version": 2,
+  "input_data": {
     "area": 500,
-    "total": "415 800 ₽",
-    "rate": "Эффективно: 832 ₽/м²",
-    "text": "Предварительная оценка работ по кирпичному фасаду..."
+    "baseRate": 300,
+    "heightCoef": 1.2,
+    "brickCoef": 1.0
+  },
+  "output_data": {
+    "total": 237600,
+    "effectiveRate": 475.2,
+    "days": 4,
+    "warning": "Рабочая зона",
+    "clientText": "Предварительная оценка работ..."
   }
-]
+}
 ```
 
-Чтение и запись `localStorage` выполняются через `try/catch`. При повреждённом или недоступном хранилище приложение использует пустой массив.
+### Связи и cardinality
 
-## 7. Валидация и ограничения
+| Parent | Связь | Child | Реализация |
+|---|---|---|---|
+| Workspace | 1:N | User | `User.workspace_id` |
+| Workspace | 1:N | Client | `Client.workspace_id` |
+| Client | 1:N | ServiceObject | `ServiceObject.client_id` |
+| ServiceObject | 1:N | Calculation | `Calculation.service_object_id` |
+| User | 1:N | Calculation | `Calculation.created_by_user_id` |
+| Calculation | 1:N | CalculationVersion | `CalculationVersion.calculation_id` |
+| User | 1:N | CalculationVersion | `CalculationVersion.created_by_user_id` |
 
-- `area`, ставки, нормы, проценты и объёмы — числа не меньше 0.
-- Основная площадь, количество постов, количество смен, норма выработки и размер бригады должны быть больше 0.
-- `posts`, `crew`, `hatches` и `hydroLayers` — целые числа.
-- Все коэффициенты должны быть больше 0 и браться из разрешённых значений `<select>`.
-- Если основная площадь равна 0, эффективная ставка возвращается как 0; интерфейс не должен показывать `NaN` или `Infinity`.
-- Поля опционального фасадного блока игнорируются, пока соответствующий переключатель выключен.
-- Округление применяется только при отображении; вычисления выполняются с исходными числовыми значениями.
-- Форматирование валюты выполняется для локали `ru-RU`.
-- Данные разных калькуляторов изолированы внутри отдельных `iframe`.
+Связей N:M в текущей модели нет, поэтому отдельная junction-таблица не требуется.
 
-## 8. Текущие ограничения хранения
+## Lookups
 
-- Расчёты пожара и металла не сохраняются.
-- Расчёты фасада доступны только в том же браузере и на том же устройстве.
-- Пользователи, авторизация, серверная синхронизация и общая база объектов отсутствуют.
-- Удаление сохранённого расчёта фасада физически удаляет элемент из массива `facadeCalcs`.
+### user_role
+
+| value | meaning |
+|---|---|
+| `admin` | Управляет пользователями и видит все данные |
+| `manager` | Работает с клиентами, объектами и расчётами |
+
+### calculation_type
+
+| value | meaning |
+|---|---|
+| `fire` | Расчёт работ после пожара |
+| `metal` | Расчёт очистки металла |
+| `facade` | Расчёт очистки кирпичного фасада |
+
+### calculation_status
+
+| value | meaning |
+|---|---|
+| `draft` | Расчёт в работе |
+| `final` | Согласованный вариант |
+| `archived` | Расчёт скрыт из активной работы, но сохранён |
+
+### Остальные статусы
+
+| lookup | values |
+|---|---|
+| `workspace_status` | `active`, `archived` |
+| `user_status` | `active`, `archived` |
+| `client_status` | `active`, `archived` |
+| `object_status` | `active`, `archived` |
+
+## Lifecycle and access rules
+
+- Данные принадлежат `Workspace`; пользователи разных рабочих пространств не видят данные друг друга.
+- В первом рабочем пространстве менеджеры видят общих клиентов, объекты и расчёты компании.
+- Автор расчёта и каждой версии фиксируется через `created_by_user_id`.
+- Изменение параметров не перезаписывает старую версию, а создаёт новую `CalculationVersion`.
+- Версии расчётов не редактируются и не удаляются в обычном пользовательском сценарии.
+- Клиенты, объекты, пользователи и расчёты архивируются изменением `status`, а не удаляются физически.
+- Секреты, пароли и API-ключи в таблицах не хранятся.
+
+## ASCII relationship diagram
+
+```text
+┌───────────────┐
+│   Workspace   │
+│───────────────│
+│ id         PK │
+│ name          │
+│ status        │
+└───────┬───────┘
+        │ 1:N
+        ├──────────────────────────┐
+        ▼                          ▼
+┌───────────────┐          ┌───────────────┐
+│     User      │          │    Client     │
+│───────────────│          │───────────────│
+│ id         PK │          │ id         PK │
+│ workspace_id FK│         │ workspace_id FK│
+│ role          │          │ name          │
+└───────┬───────┘          └───────┬───────┘
+        │                           │ 1:N
+        │                           ▼
+        │                   ┌────────────────┐
+        │                   │ ServiceObject  │
+        │                   │────────────────│
+        │                   │ id          PK │
+        │                   │ client_id   FK │
+        │                   │ title          │
+        │                   └───────┬────────┘
+        │                           │ 1:N
+        │                           ▼
+        │  creates          ┌────────────────┐
+        └──────────────────►│  Calculation   │
+                            │────────────────│
+                            │ id          PK │
+                            │ object_id   FK │
+                            │ created_by  FK │
+                            │ type           │
+                            └───────┬────────┘
+                                    │ 1:N
+                                    ▼
+                            ┌────────────────────┐
+                            │ CalculationVersion │
+                            │────────────────────│
+                            │ id              PK │
+                            │ calculation_id  FK │
+                            │ created_by      FK │◄──── User 1:N
+                            │ version            │
+                            └────────────────────┘
+```
+
+В диаграмме сокращены подписи некоторых FK для компактности:
+
+- `Calculation.object_id` = `Calculation.service_object_id`;
+- `created_by` = `created_by_user_id`.
