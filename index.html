@@ -553,7 +553,7 @@
     }
     function copyClientText() { navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText); alert(&quot;Текст скопирован&quot;); }
         var LS_KEY = &quot;facadeCalcs&quot;;
-    function getSaved() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; } catch(e) { return []; } }
+    function getSaved() { try { const saved = JSON.parse(localStorage.getItem(LS_KEY)); return Array.isArray(saved) ? saved : []; } catch(e) { return []; } }
     function setSaved(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e) { alert(&quot;Не удалось сохранить (хранилище недоступно)&quot;); } }
     function saveCalc() {
       var arr = getSaved();
