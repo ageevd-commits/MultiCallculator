@@ -182,7 +182,15 @@
       document.getElementById(&quot;warning&quot;).innerText = warning;
       document.getElementById(&quot;clientText&quot;).innerText = `Предварительная оценка работ после пожара\n\nПо предоставленной информации ориентировочная стоимость комплекса работ составляет ${rub(total)}.\n\nВ расчет включены:\n— базовая очистка и подготовка помещений после пожара по площади около ${area} м²;\n— поправка на высоту, сложность доступа, деликатность отделки и уровень контроля;\n— отдельные блоки: демонтаж/вывоз, лестницы, скрытые полости и вскрытие лючков — при наличии соответствующих объемов;\n— резерв на непредвиденные работы.\n\nОриентировочная эффективная ставка: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м².\nОриентировочный срок: около ${Math.ceil(days)} рабочих дней при бригаде ${crew} человек.\n\nВажно: работы в скрытых полостях, зашивках, технических лючках и труднодоступных местах лучше фиксировать отдельным блоком, так как фактический объем уточняется после вскрытия и осмотра.\n\n${comment}`;
     }
-    function copyClientText() { navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText); alert(&quot;Текст скопирован&quot;); }
+    async function copyClientText() {
+      try {
+        await navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText);
+        alert(&quot;Текст скопирован&quot;);
+      } catch (error) {
+        console.error(&quot;Не удалось скопировать текст:&quot;, error);
+        alert(&quot;Не удалось скопировать текст. Попробуйте ещё раз или скопируйте его вручную.&quot;);
+      }
+    }
     calculate();
   &lt;/script&gt;
 &lt;/body&gt;
@@ -438,9 +446,14 @@
       document.getElementById(&quot;warning&quot;).innerText = warn;
     }
 
-    function copyClientText() {
-      navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText);
-      alert(&quot;Текст скопирован&quot;);
+    async function copyClientText() {
+      try {
+        await navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText);
+        alert(&quot;Текст скопирован&quot;);
+      } catch (error) {
+        console.error(&quot;Не удалось скопировать текст:&quot;, error);
+        alert(&quot;Не удалось скопировать текст. Попробуйте ещё раз или скопируйте его вручную.&quot;);
+      }
     }
 
     calculate();
@@ -551,7 +564,15 @@
       const extra = parts.length ? `\n— дополнительно: ${parts.join(&quot;, &quot;)};` : &quot;&quot;;
       document.getElementById(&quot;clientText&quot;).innerText = `Предварительная оценка работ по кирпичному фасаду\n\nПо предоставленной информации ориентировочная стоимость комплекса работ составляет ${rub(total)}.\n\nВ расчет включены:\n— абразивоструйная очистка фасада по площади около ${area} м²;\n— поправка на высоту, тип кирпича, загрязнение, доступ, сегмент и организацию работ;${extra}\n— резерв на непредвиденные работы.\n\nОриентировочная эффективная ставка: ${Math.round(effectiveRate).toLocaleString(&quot;ru-RU&quot;)} ₽/м².\nОриентировочный срок: около ${Math.ceil(days)} рабочих дней при бригаде ${crew} человек.\n\n${document.getElementById(&quot;comment&quot;).value}`;
     }
-    function copyClientText() { navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText); alert(&quot;Текст скопирован&quot;); }
+    async function copyClientText() {
+      try {
+        await navigator.clipboard.writeText(document.getElementById(&quot;clientText&quot;).innerText);
+        alert(&quot;Текст скопирован&quot;);
+      } catch (error) {
+        console.error(&quot;Не удалось скопировать текст:&quot;, error);
+        alert(&quot;Не удалось скопировать текст. Попробуйте ещё раз или скопируйте его вручную.&quot;);
+      }
+    }
         var LS_KEY = &quot;facadeCalcs&quot;;
     function getSaved() { try { const saved = JSON.parse(localStorage.getItem(LS_KEY)); return Array.isArray(saved) ? saved.filter(function(r) { return r !== null && typeof r === &quot;object&quot; && !Array.isArray(r) && Object.prototype.hasOwnProperty.call(r, &quot;total&quot;); }) : []; } catch(e) { return []; } }
     function setSaved(arr) { try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch(e) { alert(&quot;Не удалось сохранить (хранилище недоступно)&quot;); } }
