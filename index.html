@@ -240,6 +240,29 @@
     }
     textarea { min-height: 86px; resize: vertical; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .section { margin-top: 22px; padding-top: 4px; border-top: 1px solid #eaecf0; }
+    .section h3 { margin: 14px 0 4px; font-size: 17px; }
+    .choiceList { display: grid; gap: 8px; margin-top: 10px; }
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px;
+      border: 1px solid #eaecf0;
+      border-radius: 10px;
+    }
+    .choice input { width: auto; margin-top: 2px; }
+    .choice label { margin: 0; font-weight: 600; }
+    .volumeFields[hidden] { display: none; }
+    .estimateNotice {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 14px;
+      font-weight: 700;
+    }
     .result {
       font-size: 18px;
       line-height: 1.45;
@@ -299,28 +322,41 @@
   &lt;div class=&quot;wrap&quot;&gt;
     &lt;div class=&quot;card&quot;&gt;
       &lt;h1&gt;Калькулятор очистки металла под покраску&lt;/h1&gt;
-      &lt;div class=&quot;note&quot;&gt;Для предварительной ОС: абразивоструйная очистка металла, без покраски. Подходит для балок, ферм, перекрытий, цистерн, металлоконструкций.&lt;/div&gt;
+      &lt;div class=&quot;note&quot;&gt;Предварительная оценка стоимости только абразивоструйной очистки металла. Остальные выбранные работы требуют отдельной оценки и не входят в текущий расчёт.&lt;/div&gt;
 
-      &lt;div class=&quot;grid2&quot;&gt;
-        &lt;div&gt;
-          &lt;label&gt;Площадь металла, м²&lt;/label&gt;
-          &lt;input id=&quot;area&quot; type=&quot;number&quot; value=&quot;500&quot; min=&quot;1&quot; /&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-          &lt;label&gt;Количество постов&lt;/label&gt;
-          &lt;input id=&quot;posts&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;
-        &lt;/div&gt;
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;1. Объект&lt;/h3&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Тип объекта&lt;/label&gt;&lt;select id=&quot;objectType&quot;&gt;&lt;option value=&quot;sheet&quot;&gt;Листовой металл&lt;/option&gt;&lt;option value=&quot;beams&quot; selected&gt;Балки/профиль&lt;/option&gt;&lt;option value=&quot;trusses&quot;&gt;Фермы&lt;/option&gt;&lt;option value=&quot;stairs&quot;&gt;Лестницы/перила&lt;/option&gt;&lt;option value=&quot;pipes&quot;&gt;Трубы&lt;/option&gt;&lt;option value=&quot;tank&quot;&gt;Резервуар&lt;/option&gt;&lt;option value=&quot;items&quot;&gt;Изделия/детали&lt;/option&gt;&lt;option value=&quot;other&quot;&gt;Прочее&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Расположение поверхности&lt;/label&gt;&lt;select id=&quot;surfaceSide&quot;&gt;&lt;option value=&quot;external&quot; selected&gt;Наружная&lt;/option&gt;&lt;option value=&quot;internal&quot;&gt;Внутренняя&lt;/option&gt;&lt;option value=&quot;mixed&quot;&gt;Смешанная&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;label&gt;Местоположение объекта&lt;/label&gt;&lt;input id=&quot;location&quot; type=&quot;text&quot; placeholder=&quot;Город, адрес или площадка&quot; /&gt;
       &lt;/div&gt;
 
-      &lt;label&gt;Тип геометрии&lt;/label&gt;
-      &lt;select id=&quot;geometry&quot;&gt;
-        &lt;option value=&quot;1.00&quot;&gt;Простой металл: листы, прямые балки&lt;/option&gt;
-        &lt;option value=&quot;1.20&quot; selected&gt;Средняя сложность: балки, ребра, стыки&lt;/option&gt;
-        &lt;option value=&quot;1.45&quot;&gt;Сложная геометрия: фермы, связи, много углов&lt;/option&gt;
-        &lt;option value=&quot;1.70&quot;&gt;Очень сложная: плотные фермы / работа над головой&lt;/option&gt;
-      &lt;/select&gt;
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;2. Объём&lt;/h3&gt;
+      &lt;label&gt;Способ задания объёма&lt;/label&gt;&lt;select id=&quot;volumeMode&quot;&gt;&lt;option value=&quot;known&quot; selected&gt;Площадь известна&lt;/option&gt;&lt;option value=&quot;dimensions&quot;&gt;Расчёт площади по размерам&lt;/option&gt;&lt;option value=&quot;items&quot;&gt;Количество изделий&lt;/option&gt;&lt;/select&gt;
+      &lt;div class=&quot;volumeFields&quot; data-volume-mode=&quot;known&quot;&gt;&lt;label&gt;Площадь металла, м²&lt;/label&gt;&lt;input id=&quot;area&quot; type=&quot;number&quot; value=&quot;500&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;
+      &lt;div class=&quot;volumeFields grid2&quot; data-volume-mode=&quot;dimensions&quot; hidden&gt;&lt;div&gt;&lt;label&gt;Длина, м&lt;/label&gt;&lt;input id=&quot;length&quot; type=&quot;number&quot; value=&quot;10&quot; min=&quot;0&quot; step=&quot;0.01&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Ширина, м&lt;/label&gt;&lt;input id=&quot;width&quot; type=&quot;number&quot; value=&quot;5&quot; min=&quot;0&quot; step=&quot;0.01&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Количество одинаковых поверхностей&lt;/label&gt;&lt;input id=&quot;dimensionCount&quot; type=&quot;number&quot; value=&quot;10&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;volumeFields grid2&quot; data-volume-mode=&quot;items&quot; hidden&gt;&lt;div&gt;&lt;label&gt;Количество изделий&lt;/label&gt;&lt;input id=&quot;itemCount&quot; type=&quot;number&quot; value=&quot;10&quot; min=&quot;0&quot; /&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Площадь одного изделия, м²&lt;/label&gt;&lt;input id=&quot;itemArea&quot; type=&quot;number&quot; value=&quot;50&quot; min=&quot;0&quot; step=&quot;0.01&quot; /&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div class=&quot;note&quot; id=&quot;calculatedArea&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
 
-      &lt;label&gt;Состояние поверхности&lt;/label&gt;
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;3. Состав работ&lt;/h3&gt;
+      &lt;div class=&quot;choiceList&quot;&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;abrasiveBlastingOn&quot; type=&quot;checkbox&quot; checked disabled /&gt;&lt;label for=&quot;abrasiveBlastingOn&quot;&gt;Абразивоструйная очистка — рассчитывается текущей моделью&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;sweepBlastingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;sweepBlastingOn&quot;&gt;Sweep blasting&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;mechanicalPreparationOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;mechanicalPreparationOn&quot;&gt;Механическая подготовка&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;primingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;primingOn&quot;&gt;Грунтование&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;paintingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;paintingOn&quot;&gt;Окраска&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;coveringOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;coveringOn&quot;&gt;Укрывка&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;abrasiveCollectionOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;abrasiveCollectionOn&quot;&gt;Сбор абразива&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;disposalOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;disposalOn&quot;&gt;Утилизация&lt;/label&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;4. Поверхность&lt;/h3&gt;
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Степень коррозии&lt;/label&gt;&lt;select id=&quot;corrosionGrade&quot;&gt;&lt;option value=&quot;unknown&quot;&gt;Не определена&lt;/option&gt;&lt;option value=&quot;light&quot;&gt;Лёгкая&lt;/option&gt;&lt;option value=&quot;medium&quot; selected&gt;Средняя&lt;/option&gt;&lt;option value=&quot;strong&quot;&gt;Сильная&lt;/option&gt;&lt;option value=&quot;heavy&quot;&gt;Тяжёлая&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Состояние старого ЛКП&lt;/label&gt;&lt;select id=&quot;oldCoatingState&quot;&gt;&lt;option value=&quot;unknown&quot;&gt;Не определено&lt;/option&gt;&lt;option value=&quot;none&quot;&gt;Отсутствует&lt;/option&gt;&lt;option value=&quot;weak&quot;&gt;Слабое / частично разрушено&lt;/option&gt;&lt;option value=&quot;sound&quot; selected&gt;Держится на поверхности&lt;/option&gt;&lt;option value=&quot;thick&quot;&gt;Многослойное / толстое&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;label&gt;Сложность состояния — временный параметр текущего расчёта&lt;/label&gt;
       &lt;select id=&quot;condition&quot;&gt;
         &lt;option value=&quot;1.00&quot;&gt;Легкая коррозия / слабое ЛКП&lt;/option&gt;
         &lt;option value=&quot;1.20&quot; selected&gt;Средняя коррозия + старая краска&lt;/option&gt;
@@ -334,20 +370,41 @@
         &lt;option value=&quot;1.15&quot; selected&gt;Sa 2 — под стандартную покраску&lt;/option&gt;
         &lt;option value=&quot;1.35&quot;&gt;Sa 2.5 — качественная подготовка&lt;/option&gt;
       &lt;/select&gt;
+      &lt;/div&gt;
 
-      &lt;label&gt;Доступ и условия&lt;/label&gt;
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;5. Геометрия и доступ&lt;/h3&gt;
+      &lt;label&gt;Тип геометрии — временный параметр текущего расчёта&lt;/label&gt;
+      &lt;select id=&quot;geometry&quot;&gt;
+        &lt;option value=&quot;1.00&quot;&gt;Простой металл: листы, прямые балки&lt;/option&gt;
+        &lt;option value=&quot;1.20&quot; selected&gt;Средняя сложность: балки, ребра, стыки&lt;/option&gt;
+        &lt;option value=&quot;1.45&quot;&gt;Сложная геометрия: фермы, связи, много углов&lt;/option&gt;
+        &lt;option value=&quot;1.70&quot;&gt;Очень сложная: плотные фермы / работа над головой&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;div class=&quot;grid2&quot;&gt;&lt;div&gt;&lt;label&gt;Фактический доступ&lt;/label&gt;&lt;select id=&quot;accessMethod&quot;&gt;&lt;option value=&quot;ground&quot;&gt;С земли&lt;/option&gt;&lt;option value=&quot;scaffolding&quot;&gt;Леса&lt;/option&gt;&lt;option value=&quot;lift&quot; selected&gt;Подъёмник&lt;/option&gt;&lt;option value=&quot;height&quot;&gt;Высотные участки&lt;/option&gt;&lt;option value=&quot;insideTank&quot;&gt;Внутри резервуара&lt;/option&gt;&lt;option value=&quot;mixed&quot;&gt;Комбинированный доступ&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;div&gt;&lt;label&gt;Средства доступа предоставляет&lt;/label&gt;&lt;select id=&quot;accessProvider&quot;&gt;&lt;option value=&quot;unknown&quot;&gt;Не определено&lt;/option&gt;&lt;option value=&quot;customer&quot; selected&gt;Заказчик&lt;/option&gt;&lt;option value=&quot;contractor&quot;&gt;Исполнитель&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;label&gt;Доступ и условия — временный параметр текущего расчёта&lt;/label&gt;
       &lt;select id=&quot;access&quot;&gt;
         &lt;option value=&quot;1.00&quot;&gt;Хороший доступ, работа с земли / удобно&lt;/option&gt;
         &lt;option value=&quot;1.15&quot;&gt;Подъемник, нормальный доступ&lt;/option&gt;
         &lt;option value=&quot;1.30&quot; selected&gt;Подъемник + работа снизу вверх&lt;/option&gt;
         &lt;option value=&quot;1.55&quot;&gt;Сложный доступ / ветер / частые перестановки&lt;/option&gt;
       &lt;/select&gt;
+      &lt;/div&gt;
 
+      &lt;div class=&quot;section&quot;&gt;
+      &lt;h3&gt;6. Производительность и параметры текущего расчёта&lt;/h3&gt;
       &lt;div class=&quot;grid2&quot;&gt;
+        &lt;div&gt;
+          &lt;label&gt;Количество постов&lt;/label&gt;
+          &lt;input id=&quot;posts&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;
+        &lt;/div&gt;
         &lt;div&gt;
           &lt;label&gt;Базовая выработка поста, м²/смена&lt;/label&gt;
           &lt;input id=&quot;baseProduction&quot; type=&quot;number&quot; value=&quot;90&quot; min=&quot;10&quot; /&gt;
         &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;grid2&quot;&gt;
         &lt;div&gt;
           &lt;label&gt;Базовая цена, ₽/м²&lt;/label&gt;
           &lt;input id=&quot;basePrice&quot; type=&quot;number&quot; value=&quot;750&quot; min=&quot;100&quot; /&gt;
@@ -356,7 +413,7 @@
 
       &lt;div class=&quot;grid2&quot;&gt;
         &lt;div&gt;
-          &lt;label&gt;Минимальная маржа / риск, %&lt;/label&gt;
+          &lt;label&gt;Резерв текущего расчёта, %&lt;/label&gt;
           &lt;input id=&quot;risk&quot; type=&quot;number&quot; value=&quot;20&quot; min=&quot;0&quot; /&gt;
         &lt;/div&gt;
         &lt;div&gt;
@@ -364,6 +421,9 @@
           &lt;input id=&quot;shiftsPerDay&quot; type=&quot;number&quot; value=&quot;1&quot; min=&quot;1&quot; /&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;section&quot;&gt;&lt;h3&gt;7. Дополнительные работы и расходы&lt;/h3&gt;&lt;div class=&quot;note&quot;&gt;Средства доступа, укрывка, сбор абразива, утилизация и другие выбранные дополнительные работы требуют отдельной оценки и не входят в текущий расчёт, если это явно не согласовано.&lt;/div&gt;&lt;/div&gt;
 
       &lt;label&gt;Комментарий / особенности объекта&lt;/label&gt;
       &lt;textarea id=&quot;comment&quot;&gt;Подъемник и укрытие предоставляет заказчик. Работа только по металлу, без покраски.&lt;/textarea&gt;
@@ -387,6 +447,7 @@
         &lt;tr&gt;&lt;td&gt;Количество смен&lt;/td&gt;&lt;td id=&quot;shifts&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
         &lt;tr&gt;&lt;td&gt;Ориентир по стоимости&lt;/td&gt;&lt;td id=&quot;sumRange&quot;&gt;—&lt;/td&gt;&lt;/tr&gt;
       &lt;/table&gt;
+      &lt;div class=&quot;estimateNotice&quot; id=&quot;estimateNotice&quot;&gt;&lt;/div&gt;
 
       &lt;button onclick=&quot;copyClientText()&quot;&gt;Скопировать текст для клиента&lt;/button&gt;
       &lt;div class=&quot;clientText&quot; id=&quot;clientText&quot;&gt;&lt;/div&gt;
@@ -395,15 +456,48 @@
   &lt;/div&gt;
 
   &lt;script&gt;
-    const ids = [&quot;area&quot;,&quot;posts&quot;,&quot;geometry&quot;,&quot;condition&quot;,&quot;standard&quot;,&quot;access&quot;,&quot;baseProduction&quot;,&quot;basePrice&quot;,&quot;risk&quot;,&quot;shiftsPerDay&quot;,&quot;comment&quot;];
-    ids.forEach(id =&gt; document.getElementById(id).addEventListener(&quot;input&quot;, calculate));
+    const ids = [&quot;objectType&quot;,&quot;surfaceSide&quot;,&quot;location&quot;,&quot;volumeMode&quot;,&quot;area&quot;,&quot;length&quot;,&quot;width&quot;,&quot;dimensionCount&quot;,&quot;itemCount&quot;,&quot;itemArea&quot;,&quot;abrasiveBlastingOn&quot;,&quot;sweepBlastingOn&quot;,&quot;mechanicalPreparationOn&quot;,&quot;primingOn&quot;,&quot;paintingOn&quot;,&quot;coveringOn&quot;,&quot;abrasiveCollectionOn&quot;,&quot;disposalOn&quot;,&quot;corrosionGrade&quot;,&quot;oldCoatingState&quot;,&quot;posts&quot;,&quot;geometry&quot;,&quot;condition&quot;,&quot;standard&quot;,&quot;accessMethod&quot;,&quot;accessProvider&quot;,&quot;access&quot;,&quot;baseProduction&quot;,&quot;basePrice&quot;,&quot;risk&quot;,&quot;shiftsPerDay&quot;,&quot;comment&quot;];
+    ids.forEach(id =&gt; {
+      const element = document.getElementById(id);
+      element.addEventListener(&quot;input&quot;, calculate);
+      element.addEventListener(&quot;change&quot;, calculate);
+    });
 
     function rub(n) {
       return Math.round(n).toLocaleString(&quot;ru-RU&quot;) + &quot; ₽&quot;;
     }
 
+    function getEffectiveArea() {
+      const mode = document.getElementById(&quot;volumeMode&quot;).value;
+      document.querySelectorAll(&quot;[data-volume-mode]&quot;).forEach(block =&gt; {
+        block.hidden = block.dataset.volumeMode !== mode;
+      });
+      if (mode === &quot;dimensions&quot;) {
+        return (+document.getElementById(&quot;length&quot;).value || 0) * (+document.getElementById(&quot;width&quot;).value || 0) * (+document.getElementById(&quot;dimensionCount&quot;).value || 0);
+      }
+      if (mode === &quot;items&quot;) {
+        return (+document.getElementById(&quot;itemCount&quot;).value || 0) * (+document.getElementById(&quot;itemArea&quot;).value || 0);
+      }
+      return +document.getElementById(&quot;area&quot;).value || 0;
+    }
+
+    function getUnpricedWorks() {
+      const works = [
+        [&quot;sweepBlastingOn&quot;, &quot;sweep blasting&quot;],
+        [&quot;mechanicalPreparationOn&quot;, &quot;механическая подготовка&quot;],
+        [&quot;primingOn&quot;, &quot;грунтование&quot;],
+        [&quot;paintingOn&quot;, &quot;окраска&quot;],
+        [&quot;coveringOn&quot;, &quot;укрывка&quot;],
+        [&quot;abrasiveCollectionOn&quot;, &quot;сбор абразива&quot;],
+        [&quot;disposalOn&quot;, &quot;утилизация&quot;]
+      ];
+      const selected = works.filter(([id]) =&gt; document.getElementById(id).checked).map(([, name]) =&gt; name);
+      if (document.getElementById(&quot;accessProvider&quot;).value === &quot;contractor&quot;) selected.push(&quot;средства доступа исполнителя&quot;);
+      return selected;
+    }
+
     function calculate() {
-      const area = +document.getElementById(&quot;area&quot;).value || 0;
+      const area = getEffectiveArea();
       const posts = +document.getElementById(&quot;posts&quot;).value || 1;
       const g = +document.getElementById(&quot;geometry&quot;).value;
       const c = +document.getElementById(&quot;condition&quot;).value;
@@ -414,6 +508,7 @@
       const risk = (+document.getElementById(&quot;risk&quot;).value || 0) / 100;
       const shiftsPerDay = +document.getElementById(&quot;shiftsPerDay&quot;).value || 1;
       const comment = document.getElementById(&quot;comment&quot;).value;
+      const unpricedWorks = getUnpricedWorks();
 
       const coef = g * c * s * a;
       const prodOne = Math.max(15, baseProduction / coef);
@@ -436,8 +531,14 @@
       document.getElementById(&quot;prodAll&quot;).innerText = `${Math.round(prodAll)} м²/смена`;
       document.getElementById(&quot;shifts&quot;).innerText = `${shifts.toFixed(1)} смен`;
       document.getElementById(&quot;sumRange&quot;).innerText = `${rub(totalMin)} – ${rub(totalMax)}`;
+      document.getElementById(&quot;calculatedArea&quot;).innerText = `Расчётная площадь: ${area.toLocaleString(&quot;ru-RU&quot;)} м²`;
 
-      const text = `Предварительная оценка по очистке металла под покраску\n\nПо предоставленной информации ориентировочная стоимость абразивоструйной очистки металлоконструкций составляет ${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м².\n\nОриентировочная выработка одного поста: ${Math.round(prodOne)} м² за смену.\nПри ${posts} пост(ах) общий темп работ: около ${Math.round(prodAll)} м² за смену.\nОриентировочный срок выполнения объема ${area} м²: ${Math.ceil(days)} рабоч. дн.\n\nИтого предварительно: ${rub(totalMin)} – ${rub(totalMax)}.\n\n${comment}\n\nФинальная стоимость фиксируется после осмотра или пробного участка, так как на цену влияет фактическая степень коррозии, старое покрытие, требуемая степень очистки Sa 2 / Sa 2.5 и удобство доступа к конструкциям.`;
+      const unpricedMessage = unpricedWorks.length
+        ? `Требуют отдельной оценки и не входят в текущую стоимость: ${unpricedWorks.join(&quot;, &quot;)}.`
+        : &quot;Текущая стоимость рассчитана только для абразивоструйной очистки.&quot;;
+      document.getElementById(&quot;estimateNotice&quot;).innerText = unpricedMessage;
+
+      const text = `Предварительная оценка по очистке металла под покраску\n\nПо предоставленной информации ориентировочная стоимость абразивоструйной очистки металлоконструкций составляет ${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м².\n\nОриентировочная выработка одного поста: ${Math.round(prodOne)} м² за смену.\nПри ${posts} пост(ах) общий темп работ: около ${Math.round(prodAll)} м² за смену.\nОриентировочный срок выполнения объема ${area} м²: ${Math.ceil(days)} рабоч. дн.\n\nИтого предварительно за абразивоструйную очистку: ${rub(totalMin)} – ${rub(totalMax)}.\n\n${unpricedMessage}\n\n${comment}\n\nФинальная стоимость фиксируется после осмотра или пробного участка, так как на цену влияет фактическая степень коррозии, старое покрытие, требуемая степень очистки Sa 2 / Sa 2.5 и удобство доступа к конструкциям.`;
 
       document.getElementById(&quot;clientText&quot;).innerText = text;
 
