@@ -341,9 +341,13 @@
 
       &lt;div class=&quot;section&quot;&gt;
       &lt;h3&gt;3. Состав работ&lt;/h3&gt;
+      &lt;div class=&quot;note&quot;&gt;&lt;b&gt;Основная абразивоструйная очистка&lt;/b&gt; — рассчитывается текущей моделью. Sweep blasting здесь является только режимом основной очистки и не меняет ставку, производительность, сроки или итоговую стоимость.&lt;/div&gt;
       &lt;div class=&quot;choiceList&quot;&gt;
         &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;abrasiveBlastingOn&quot; type=&quot;checkbox&quot; checked disabled /&gt;&lt;label for=&quot;abrasiveBlastingOn&quot;&gt;Абразивоструйная очистка — рассчитывается текущей моделью&lt;/label&gt;&lt;/div&gt;
-        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;sweepBlastingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;sweepBlastingOn&quot;&gt;Sweep blasting&lt;/label&gt;&lt;/div&gt;
+        &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;sweepBlastingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;sweepBlastingOn&quot;&gt;Sweep blasting — режим основной очистки (без влияния на расчёт)&lt;/label&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;note&quot; style=&quot;margin-top:18px;margin-bottom:8px&quot;&gt;&lt;b&gt;Дополнительные работы&lt;/b&gt; — требуют отдельной оценки и не входят в текущую стоимость.&lt;/div&gt;
+      &lt;div class=&quot;choiceList&quot;&gt;
         &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;mechanicalPreparationOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;mechanicalPreparationOn&quot;&gt;Механическая подготовка&lt;/label&gt;&lt;/div&gt;
         &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;primingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;primingOn&quot;&gt;Грунтование&lt;/label&gt;&lt;/div&gt;
         &lt;div class=&quot;choice&quot;&gt;&lt;input id=&quot;paintingOn&quot; type=&quot;checkbox&quot; /&gt;&lt;label for=&quot;paintingOn&quot;&gt;Окраска&lt;/label&gt;&lt;/div&gt;
@@ -483,7 +487,6 @@
 
     function getUnpricedWorks() {
       const works = [
-        [&quot;sweepBlastingOn&quot;, &quot;sweep blasting&quot;],
         [&quot;mechanicalPreparationOn&quot;, &quot;механическая подготовка&quot;],
         [&quot;primingOn&quot;, &quot;грунтование&quot;],
         [&quot;paintingOn&quot;, &quot;окраска&quot;],
@@ -508,6 +511,8 @@
       const risk = (+document.getElementById(&quot;risk&quot;).value || 0) / 100;
       const shiftsPerDay = +document.getElementById(&quot;shiftsPerDay&quot;).value || 1;
       const comment = document.getElementById(&quot;comment&quot;).value;
+      const sweepBlastingOn = document.getElementById(&quot;sweepBlastingOn&quot;).checked;
+      const cleaningMode = sweepBlastingOn ? &quot;Sweep blasting&quot; : &quot;Стандартная абразивоструйная очистка&quot;;
       const unpricedWorks = getUnpricedWorks();
 
       const coef = g * c * s * a;
@@ -535,10 +540,10 @@
 
       const unpricedMessage = unpricedWorks.length
         ? `Требуют отдельной оценки и не входят в текущую стоимость: ${unpricedWorks.join(&quot;, &quot;)}.`
-        : &quot;Текущая стоимость рассчитана только для абразивоструйной очистки.&quot;;
-      document.getElementById(&quot;estimateNotice&quot;).innerText = unpricedMessage;
+        : &quot;Дополнительные работы не выбраны. Текущая стоимость рассчитана только для основной абразивоструйной очистки.&quot;;
+      document.getElementById(&quot;estimateNotice&quot;).innerText = `Режим основной очистки: ${cleaningMode}. ${unpricedMessage}`;
 
-      const text = `Предварительная оценка по очистке металла под покраску\n\nПо предоставленной информации ориентировочная стоимость абразивоструйной очистки металлоконструкций составляет ${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м².\n\nОриентировочная выработка одного поста: ${Math.round(prodOne)} м² за смену.\nПри ${posts} пост(ах) общий темп работ: около ${Math.round(prodAll)} м² за смену.\nОриентировочный срок выполнения объема ${area} м²: ${Math.ceil(days)} рабоч. дн.\n\nИтого предварительно за абразивоструйную очистку: ${rub(totalMin)} – ${rub(totalMax)}.\n\n${unpricedMessage}\n\n${comment}\n\nФинальная стоимость фиксируется после осмотра или пробного участка, так как на цену влияет фактическая степень коррозии, старое покрытие, требуемая степень очистки Sa 2 / Sa 2.5 и удобство доступа к конструкциям.`;
+      const text = `Предварительная оценка по очистке металла под покраску\n\nПо предоставленной информации ориентировочная стоимость абразивоструйной очистки металлоконструкций составляет ${Math.round(priceMin)}–${Math.round(priceMax)} ₽/м².\nРежим основной очистки: ${cleaningMode}. Выбор Sweep blasting не изменяет ставку, производительность, сроки или итоговую стоимость в текущей модели.\n\nОриентировочная выработка одного поста: ${Math.round(prodOne)} м² за смену.\nПри ${posts} пост(ах) общий темп работ: около ${Math.round(prodAll)} м² за смену.\nОриентировочный срок выполнения объема ${area} м²: ${Math.ceil(days)} рабоч. дн.\n\nИтого предварительно за абразивоструйную очистку: ${rub(totalMin)} – ${rub(totalMax)}.\n\n${unpricedMessage}\n\n${comment}\n\nФинальная стоимость фиксируется после осмотра или пробного участка, так как на цену влияет фактическая степень коррозии, старое покрытие, требуемая степень очистки Sa 2 / Sa 2.5 и удобство доступа к конструкциям.`;
 
       document.getElementById(&quot;clientText&quot;).innerText = text;
 
