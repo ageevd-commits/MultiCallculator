@@ -3,6 +3,7 @@ name: Product watchdog
 on:
   schedule:
     - cron: "*/5 * * * *"
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,3 +21,10 @@ jobs:
               -d text="🔴 MultiCallculator не отвечает"
             exit 1
           fi
+
+      - name: Send daily heartbeat
+        if: github.event.schedule == '0 6 * * *'
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d text="✅ MultiCallculator: мониторинг работает"
