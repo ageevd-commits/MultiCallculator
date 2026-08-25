@@ -1,0 +1,22 @@
+name: Product watchdog
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check website
+        run: |
+          if curl --fail --silent --show-error https://ageevd-commits.github.io/MultiCallculator/ > /dev/null; then
+            echo "Site is available"
+          else
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d text="🔴 MultiCallculator не отвечает"
+            exit 1
+          fi
