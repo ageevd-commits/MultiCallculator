@@ -64,6 +64,25 @@
       header { padding: 14px; }
       iframe { height: calc(100vh - 140px); }
     }
+    @media (max-width: 430px) {
+      html, body { overflow-x: hidden; }
+      header { padding: 10px 12px 12px; }
+      .top { gap: 10px; }
+      .tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .tabs button {
+        width: 100%;
+        padding: 8px 6px;
+        font-size: 12px;
+        line-height: 1.2;
+        white-space: normal;
+      }
+      iframe { height: calc(100vh - 190px); }
+    }
   </style>
 </head>
 <body>
@@ -89,6 +108,7 @@
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
   &lt;title&gt;Калькулятор работ после пожара V2&lt;/title&gt;
   &lt;style&gt;
+    * { box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; color: #1f2933; }
     .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; }
     .card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
@@ -111,6 +131,24 @@
     .clientText { white-space: pre-wrap; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 12px; padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.45; }
     .section { border-top: 1px solid #eaecf0; padding-top: 10px; margin-top: 12px; }
     @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } .grid2, .grid3 { grid-template-columns: 1fr; } }
+    @media (max-width: 430px) {
+      html, body { overflow-x: hidden; max-width: 100%; }
+      body { padding: 12px; }
+      .wrap { gap: 12px; max-width: 100%; }
+      .card { padding: 14px; border-radius: 12px; max-width: 100%; }
+      h1 { font-size: 22px; }
+      h2 { font-size: 18px; }
+      h3 { font-size: 15px; }
+      .grid2, .grid3 { grid-template-columns: 1fr; gap: 8px; }
+      label { margin-top: 12px; }
+      input, select, textarea { font-size: 14px; padding: 10px; }
+      .result { font-size: 16px; }
+      .big { font-size: 24px; }
+      .pill { font-size: 12px; padding: 6px 8px; }
+      table { font-size: 12px; }
+      button { font-size: 14px; padding: 12px 10px; }
+      .clientText { font-size: 13px; max-width: 100%; }
+    }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -315,6 +353,25 @@
     .warning { color: #b42318; font-weight: 700; }
     @media (max-width: 900px) {
       .wrap { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 430px) {
+      html, body { overflow-x: hidden; max-width: 100%; }
+      body { padding: 12px; }
+      .wrap { gap: 12px; max-width: 100%; }
+      .card { padding: 14px; border-radius: 12px; max-width: 100%; }
+      h1 { font-size: 22px; }
+      h2 { font-size: 18px; }
+      h3 { font-size: 15px; }
+      .grid2 { grid-template-columns: 1fr; gap: 8px; }
+      label { margin-top: 12px; }
+      input, select, textarea { font-size: 14px; padding: 10px; }
+      .choice { padding: 8px; }
+      .result { font-size: 16px; }
+      .big { font-size: 24px; }
+      .pill { font-size: 12px; padding: 6px 8px; }
+      table { font-size: 12px; }
+      button { font-size: 14px; padding: 12px 10px; }
+      .clientText { font-size: 13px; max-width: 100%; }
     }
   &lt;/style&gt;
 &lt;/head&gt;
@@ -576,6 +633,7 @@
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
   &lt;title&gt;Калькулятор АСТ кирпичного фасада&lt;/title&gt;
   &lt;style&gt;
+    * { box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 24px; color: #1f2933; }
     .wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; }
     .card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
@@ -601,6 +659,25 @@
     .clientText { white-space: pre-wrap; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 12px; padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.45; }
     .section { border-top: 1px solid #eaecf0; padding-top: 10px; margin-top: 12px; }
     @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } .grid2, .grid3 { grid-template-columns: 1fr; } }
+    @media (max-width: 430px) {
+      html, body { overflow-x: hidden; max-width: 100%; }
+      body { padding: 12px; }
+      .wrap { gap: 12px; max-width: 100%; }
+      .card { padding: 14px; border-radius: 12px; max-width: 100%; }
+      h1 { font-size: 22px; }
+      h2 { font-size: 18px; }
+      h3 { font-size: 15px; }
+      .grid2, .grid3 { grid-template-columns: 1fr; gap: 8px; }
+      label { margin-top: 12px; }
+      input, select, textarea { font-size: 14px; padding: 10px; }
+      .opt { padding: 10px 12px; }
+      .result { font-size: 16px; }
+      .big { font-size: 24px; }
+      .pill { font-size: 12px; padding: 6px 8px; }
+      table { font-size: 12px; }
+      button { font-size: 14px; padding: 12px 10px; }
+      .clientText { font-size: 13px; max-width: 100%; }
+    }
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
