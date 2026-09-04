@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System — MultiCallculator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f6f8; margin: 0; color: #1f2933; }
+    header { background: #111827; color: #fff; padding: 18px 24px; box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+    .top { max-width: 1200px; margin: 0 auto; display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    h1 { margin: 0; font-size: 22px; }
+    .subtitle { color: #cbd5e1; font-size: 13px; margin-top: 4px; }
+    main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .card { background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    h2 { margin: 0 0 12px; font-size: 20px; }
+    h3 { margin: 22px 0 8px; font-size: 16px; }
+    .note { color: #667085; font-size: 14px; line-height: 1.4; }
+    .swatches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .swatch { border: 1px solid #eaecf0; border-radius: 12px; overflow: hidden; background: #fff; }
+    .swatch-color { height: 72px; }
+    .swatch-label { padding: 10px 12px; font-size: 14px; }
+    .type-row { border-bottom: 1px solid #eaecf0; padding: 10px 0; }
+    .type-row:last-child { border-bottom: 0; }
+    label { display: block; font-weight: 700; margin: 14px 0 6px; }
+    input, select, textarea { width: 100%; padding: 11px; border: 1px solid #d0d5dd; border-radius: 10px; font-size: 15px; background: #fff; }
+    textarea { min-height: 90px; resize: vertical; }
+    .btn-primary { width: 100%; margin-top: 16px; padding: 13px; border: 0; border-radius: 12px; background: #111827; color: #fff; font-size: 16px; cursor: pointer; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .tab { border: 1px solid rgba(17,24,39,0.18); background: #fff; color: #111827; border-radius: 999px; padding: 10px 14px; font-size: 14px; }
+    .tab.active { background: #111827; color: #fff; font-weight: 700; }
+    .pill { display: inline-block; padding: 7px 10px; border-radius: 999px; background: #eef2ff; margin: 4px 4px 4px 0; font-size: 14px; }
+    .clientText { white-space: pre-wrap; background: #f9fafb; border: 1px solid #eaecf0; border-radius: 12px; padding: 14px; font-size: 14px; margin-top: 12px; line-height: 1.45; }
+    .big { font-size: 30px; font-weight: 800; margin: 6px 0 12px; }
+    .spacing-row { display: flex; gap: 12px; align-items: center; margin: 10px 0; }
+    .space-box { height: 18px; background: #eef2ff; border: 1px solid #d0d5dd; border-radius: 4px; }
+    .warning { margin-top: 20px; background: #fff; border-radius: 16px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    ul { margin-bottom: 0; padding-left: 20px; }
+    li { margin: 8px 0; line-height: 1.4; }
+    code { background: #f9fafb; padding: 2px 6px; border-radius: 6px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .swatches { grid-template-columns: 1fr; } main { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div>
+        <h1>Design System — MultiCallculator</h1>
+        <div class="subtitle">Global Cleaning / 112 Cleaning — единый источник текущего UI-стиля</div>
+      </div>
+      <div class="tabs">
+        <span class="tab active">Эталон</span>
+        <span class="tab">Компоненты</span>
+        <span class="tab">Токены</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <h2>Палитра</h2>
+        <div class="note">Реальные значения, уже используемые в интерфейсе.</div>
+        <div class="swatches">
+          <div class="swatch"><div class="swatch-color" style="background:#111827"></div><div class="swatch-label"><b>#111827</b><br>Primary dark</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#1f2933"></div><div class="swatch-label"><b>#1f2933</b><br>Primary text</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#667085"></div><div class="swatch-label"><b>#667085</b><br>Muted text</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#cbd5e1"></div><div class="swatch-label"><b>#cbd5e1</b><br>Header secondary</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#f4f6f8"></div><div class="swatch-label"><b>#f4f6f8</b><br>Page background</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#f9fafb"></div><div class="swatch-label"><b>#f9fafb</b><br>Soft block</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#eef2ff"></div><div class="swatch-label"><b>#eef2ff</b><br>Pill background</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#ffffff"></div><div class="swatch-label"><b>#ffffff</b><br>Cards / fields</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Типографика</h2>
+        <div class="type-row"><div style="font-size:30px;font-weight:800">30px / 800 — 1 250 000 ₽</div><div class="note">Крупный итог</div></div>
+        <div class="type-row"><div style="font-size:26px">26px — Калькулятор работ</div><div class="note">Заголовок экрана</div></div>
+        <div class="type-row"><div style="font-size:20px">20px — Результат расчёта</div><div class="note">Заголовок блока</div></div>
+        <div class="type-row"><div style="font-size:16px">16px — 1. База объекта</div><div class="note">Подраздел</div></div>
+        <div class="type-row"><div style="font-size:15px">15px — Основной текст поля</div><div class="note">Input / select</div></div>
+        <div class="type-row"><div style="font-size:14px;color:#667085">14px — поясняющий текст и таблицы</div></div>
+        <div class="type-row"><div style="font-size:13px;color:#667085">13px — подпись в шапке</div></div>
+      </section>
+
+      <section class="card">
+        <h2>Кнопки и состояния</h2>
+        <div class="tabs">
+          <button class="tab active">Активная вкладка</button>
+          <button class="tab">Обычная вкладка</button>
+        </div>
+        <button class="btn-primary">Скопировать текст для клиента</button>
+        <h3>Статусы</h3>
+        <span class="pill">Нормальная ставка</span>
+        <span class="pill">Проверено</span>
+      </section>
+
+      <section class="card">
+        <h2>Поля формы</h2>
+        <label>Площадь, м²</label>
+        <input type="number" value="1000" />
+        <label>Базовая ставка</label>
+        <select><option>4000 — сложный объект</option></select>
+        <label>Комментарий</label>
+        <textarea>Пример служебного текста.</textarea>
+      </section>
+
+      <section class="card">
+        <h2>Карточки и результат</h2>
+        <div class="note">Экспресс-оценка объекта с текущей визуальной иерархией.</div>
+        <div class="big">1 250 000 ₽</div>
+        <div class="pill">≈ 4 000 ₽/м²</div>
+        <div class="clientText">Текст для клиента\nСтоимость рассчитана по текущей методологии.\nСрок и состав работ уточняются после обследования.</div>
+      </section>
+
+      <section class="card">
+        <h2>Отступы и радиусы</h2>
+        <div class="spacing-row"><code>12px</code><div class="space-box" style="width:48px"></div><span class="note">gap в сетках форм</span></div>
+        <div class="spacing-row"><code>20px</code><div class="space-box" style="width:80px"></div><span class="note">между колонками карточек</span></div>
+        <div class="spacing-row"><code>22px</code><div class="space-box" style="width:88px"></div><span class="note">padding карточки</span></div>
+        <div class="spacing-row"><code>24px</code><div class="space-box" style="width:96px"></div><span class="note">padding страницы</span></div>
+        <h3>Радиусы</h3>
+        <span class="pill">10px — поля</span>
+        <span class="pill">12px — action-кнопки</span>
+        <span class="pill">16px — карточки</span>
+        <span class="pill">999px — tabs/pills</span>
+      </section>
+    </div>
+
+    <section class="warning">
+      <h2>Найденные расхождения → единый эталон</h2>
+      <ul>
+        <li>Несколько радиусов используются одновременно. Закрепляем их по роли: <b>10px поля, 12px action-кнопки, 16px карточки, 999px tabs/pills</b>.</li>
+        <li>В светлых фонах используются близкие значения. Закрепляем: <b>#f4f6f8</b> для страницы, <b>#f9fafb</b> для служебных блоков, <b>#eef2ff</b> для pill.</li>
+        <li>Основной тёмный цвет интерфейса — <b>#111827</b>. Новые почти одинаковые тёмные оттенки не добавляем.</li>
+        <li>Шрифт остаётся <b>Arial, sans-serif</b>; новый шрифт без отдельного решения не вводим.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
