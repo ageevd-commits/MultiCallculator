@@ -97,3 +97,4 @@ MultiCallculator/
 
 - [Пользовательские сценарии](PRODUCT_SCENARIOS.md)
 - [Спецификация продукта и целевая модель данных](spec.md)
+ - GitHub CLI channel configured.
