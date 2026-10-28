@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Экономика объекта | PLAN/FACT</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="demo-banner">Демонстрационные данные <span>Все объекты, суммы и документы вымышлены</span></div>
+  <main>
+    <header class="page-header"><div><p class="eyebrow">T-039 / ЭКОНОМИКА ОБЪЕКТА</p><h1>Себестоимость <span>PLAN / FACT</span></h1><p class="subtitle">План, подтверждённые затраты и отклонения по объекту</p></div><span class="tag">Прототип · только чтение</span></header>
+    <p id="loading" role="status">Загрузка демонстрационных данных…</p>
+    <div id="error" class="notice" role="alert" hidden></div>
+    <section id="dashboard" hidden>
+      <section class="object-panel" aria-label="Выбор объекта">
+        <div><label for="objectSelect">Объект</label><select id="objectSelect"></select></div>
+        <div><h2 id="objectName"></h2><p id="objectMeta" class="muted"></p></div>
+        <span id="objectStatus" class="tag"></span>
+      </section>
+      <p id="basis" class="basis"></p>
+      <div id="warnings" aria-live="polite"></div>
+      <div id="results" aria-live="polite" aria-atomic="true">
+        <section id="metrics" class="metrics" aria-label="Итоги объекта"></section>
+        <section class="panel">
+          <div class="section-heading"><div><h2>Структура затрат</h2><p>Положительное отклонение — перерасход</p></div><span class="muted">Российские рубли</span></div>
+          <div class="table-scroll" tabindex="0" aria-label="Таблица затрат, прокручивается горизонтально">
+            <table><caption class="sr-only">Сравнение плана и факта по пяти категориям</caption><thead><tr><th scope="col">Категория</th><th scope="col">PLAN, ₽</th><th scope="col">FACT, ₽</th><th scope="col">Δ, ₽</th><th scope="col">Δ, %</th></tr></thead><tbody id="costRows"></tbody><tfoot id="costTotal"></tfoot></table>
+          </div>
+          <p class="table-note">«Нет данных» не равно нулю. При неполных данных итог не рассчитывается. При PLAN = 0 процент не определён.</p>
+        </section>
+      </div>
+      <section class="panel details-panel"><div class="section-heading"><div><h2>Детализация и источники</h2><p>Раскройте категорию, чтобы увидеть записи PLAN и FACT</p></div></div><div id="details"></div></section>
+      <footer><p>PLAN — утверждённый бюджет. FACT — только подтверждённые затраты, без прогнозов и нормативов.</p><p id="loadedAt"></p><p>Google Sheets — будущий источник истины. Сейчас данные читаются только из демонстрационного файла, изменения не сохраняются.</p></footer>
+    </section>
+    <noscript>Для работы модуля включите JavaScript.</noscript>
+  </main>
+</body>
+</html>
